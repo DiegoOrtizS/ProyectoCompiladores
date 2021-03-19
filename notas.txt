@@ -1,0 +1,188 @@
+/*
+	S -> Z1 | Z2 | Z3 | Z4 | Z5 | Z6 | Z7 | Z8 | Z9 | Z11 | Z12 | Z13 | Z14 | U
+	Z1 -> ein | zwei | drei | vier | fünf | sechs | sieben | acht | neun
+	Z2 -> Z3 zehn
+	Z3 -> drei | vier | fünf | sech | sieb | acht | neun
+	Z4 -> zwan | vier | fünf | sech | sieb | acht | neun
+	Z5 -> hundert
+	Z6 -> tausend
+	Z7 -> Z4 zig | drei ssig
+	Z8 -> U Z7
+	Z9 -> Z1 Z5
+	Z10 -> Z2 Z5
+	Z11 -> Z5 Z1 | Z5 Z2 | Z5 Z7 | Z5 Z8 | Z9 Z1 | Z9 Z2 | Z9 Z7 | Z9 Z8
+	Z12 -> Z10 Z1 | Z10 Z2 | Z10 Z7 | Z10 Z8
+	Z13 -> Z1 Z6 | Z2 Z6 | Z7 Z6 | Z8 Z6 | Z9 Z6 | Z11 Z6
+	Z14 -> Z6 Z1 | Z6 Z2 | Z6 Z7 | Z6 Z8 | Z6 Z9 | Z6 Z11 | Z13 Z1 | Z13 Z2 | Z13 Z7 | Z13 Z8 | Z13 Z9 | Z13 Z11
+	U -> Z1 und
+	*/
+	/*fünf + tausend + zwei + hundert + neun + und+ fünf + zig
+
+	S -> Z1
+	S -> Z2
+	S -> zwan
+	S -> Z5
+	S -> Z6
+	S -> Z7
+	S -> Z8
+	S -> Z9
+	S -> Z11
+	S -> Z12
+	S -> Z13
+	S -> Z14
+	S -> ​U
+	Z1 -> ein
+	Z1 -> zwei
+	Z1 -> drei
+	Z1 -> vier
+	Z1 -> fünf
+	Z1 -> sechs
+	Z1 -> sieben
+	Z1 -> acht
+	Z1 -> neun
+	Z2 -> dreizehn
+	Z2 -> Z34 zehn
+	Z34 -> vier
+	Z34 -> fünf
+	Z34 -> sech
+	Z34 -> sieb
+	Z34 -> acht
+	Z34 -> neun
+	Z4 -> zwan
+	Z4 -> vier
+	Z4 -> fünf
+	Z4 -> sech
+	Z4 -> sieb
+	Z4 -> acht
+	Z4 -> neun
+	Z5 -> hundert
+	Z6 -> tausend
+	Z7 -> zwanzig
+	Z7 -> Z34 zig
+	Z7 -> dreissig
+	Z8 -> U Z7
+	Z9 -> Z1 Z5
+	Z10 -> Z2 Z5
+	Z11 -> Z5 Z1
+	Z11 -> Z5 Z2
+	Z11 -> Z5 Z7
+	Z11 -> Z5 Z8
+	Z11 -> Z9 Z1
+	Z11 -> Z9 Z2
+	Z11 -> Z9 Z7
+	Z11 -> Z9 Z8
+	Z12 -> Z10 Z1
+	Z12 -> Z10 Z2
+	Z12 -> Z10 Z7
+	Z12 -> Z10 Z8
+	Z13 -> Z1 Z6
+	Z13 -> Z2 Z6
+	Z13 -> Z7 Z6
+	Z13 -> Z8 Z6
+	Z13 -> Z9 Z6
+	Z13 -> Z11 Z6
+	Z14 -> Z6 Z1
+	Z14 -> Z6 Z2
+	Z14 -> Z6 Z7
+	Z14 -> Z6 Z8
+	Z14 -> Z6 Z9
+	Z14 -> Z6 Z11
+	Z14 -> Z13 Z1
+	Z14 -> Z13 Z2
+	Z14 -> Z13 Z7
+	Z14 -> Z13 Z8
+	Z14 -> Z13 Z9
+	Z14 -> Z13 Z11
+	U -> Z1 und
+	*/
+	/*
+	// AÚN CON CONFLICTOS (75 ESTADOS)
+	S -> Z1 | Z2 | zwan | Z34 | Z5 | Z6 | Z7 | Z8 | Z9 | Z11 | Z12 | Z13 | Z14 | U
+	Z1 -> ein | zwei | drei | vier | fünf | sechs | sieben | acht | neun
+	Z2 -> dreizehn | Z34 zehn
+	Z34 -> vier | fünf | sech | sieb | acht | neun
+	Z5 -> hundert
+	Z6 -> tausend
+	Z7 -> zwanzig | Z34 zig | dreissig
+	Z8 -> U Z7
+	Z9 -> Z1 Z5
+	Z10 -> Z2 Z5
+	Z11 -> Z5 Z1 | Z5 Z2 | Z5 Z7 | Z5 Z8 | Z9 Z1 | Z9 Z2 | Z9 Z7 | Z9 Z8
+	Z12 -> Z10 Z1 | Z10 Z2 | Z10 Z7 | Z10 Z8
+	Z13 -> Z1 Z6 | Z2 Z6 | Z7 Z6 | Z8 Z6 | Z9 Z6 | Z11 Z6
+	Z14 -> Z6 Z1 | Z6 Z2 | Z6 Z7 | Z6 Z8 | Z6 Z9 | Z6 Z11 | Z13 Z1 | Z13 Z2 | Z13 Z7 | Z13 Z8 | Z13 Z9 | Z13 Z11
+	U -> Z1 und
+	*/
+
+S -> Z1 
+S -> Z2
+S -> zwan
+S -> ZS
+S -> Z5
+S -> Z6 
+S -> Z7 
+S -> Z8 
+S -> Z9 
+S -> Z11 
+S -> Z12 
+S -> Z13 
+S -> Z14 
+S -> ​U
+Z1 -> ein 
+Z1 -> zwei 
+Z1 -> drei 
+Z1 -> sechs
+Z1 -> sieben 
+Z1 -> Z34
+Z2 -> drei zehn
+Z2 -> Z34 zehn
+Z2 -> ZS zehn
+Z2 -> zehn
+Z2 -> elf
+Z2 -> zwölf
+Z34 -> vier
+Z34 -> fünf
+Z34 -> acht
+Z34 -> neun
+ZS -> sech
+ZS -> sieb
+Z5 -> hundert
+Z6 -> tausend
+Z7 -> zwan zig
+Z7 -> Z34 zig
+Z7 -> ZS zig
+Z7 -> drei ssig
+Z8 -> U Z7
+Z9 -> Z1 Z5
+Z10 -> Z2 Z5
+Z11 -> Z5 Z1
+Z11 -> Z5 Z2
+Z11 -> Z5 Z7
+Z11 -> Z5 Z8
+Z11 -> Z9 Z1
+Z11 -> Z9 Z2
+Z11 -> Z9 Z7
+Z11 -> Z9 Z8
+Z12 -> Z10 Z1
+Z12 -> Z10 Z2
+Z12 -> Z10 Z7
+Z12 -> Z10 Z8
+Z13 -> Z1 Z6
+Z13 -> Z2 Z6
+Z13 -> Z7 Z6
+Z13 -> Z8 Z6
+Z13 -> Z9 Z6
+Z13 -> Z11 Z6
+Z14 -> Z6 Z1
+Z14 -> Z6 Z2
+Z14 -> Z6 Z7
+Z14 -> Z6 Z8
+Z14 -> Z6 Z9
+Z14 -> Z6 Z11
+Z14 -> Z13 Z1
+Z14 -> Z13 Z2
+Z14 -> Z13 Z7
+Z14 -> Z13 Z8
+Z14 -> Z13 Z9
+Z14 -> Z13 Z11
+U -> Z1 und
