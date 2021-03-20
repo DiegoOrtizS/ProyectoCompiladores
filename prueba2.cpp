@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <stack>
+#include <regex>
 
 using namespace std;
 
@@ -29,17 +30,12 @@ struct ParseCell {
     }
 };
 
-
- bool allDigits(const string &s)
-    {
-        for (int i = 0; i < s.size(); ++i)
-        {
-            if (!isdigit(s[i])) return false;
-        }
-        return true;    // if(celda!=""){
-                //     cout<<estado<<","<<result[0][countCell]<<"="<<celda<<endl;
-                // }
-    }
+bool is_number(const std::string& s)
+{
+    std::string::const_iterator it = s.begin();
+    while (it != s.end() && std::isdigit(*it)) ++it;
+    return !s.empty() && it == s.end();
+}
 
 vector<string> split(const string& str, const string& delim)
 {
@@ -81,7 +77,7 @@ int main()
             playerInfoVector.push_back(token);
             // cout<<token<<" ";
     	}
-        cout<<endl;
+        // cout<<endl;
         result.push_back(playerInfoVector);
     }
 
@@ -93,17 +89,21 @@ int main()
     for (auto itrow=result.begin()+1;itrow!=result.end();itrow++){
         auto col = *(itrow);
         auto estado = stoi(col[0]);
+        // cout<<col[0]<<endl;
         int countCell=1;
         for (auto itcol =col.begin()+1;itcol!=col.end();itcol++){
                 auto celda= *(itcol);
+                celda= regex_replace(celda, regex("\r"), "");
+                auto action=regex_replace(result[0][countCell],regex("\r"), "");
                 // if(celda!=""){
-                //     cout<<estado<<","<<result[0][countCell]<<"="<<celda<<endl;
+                  
+                //     //cout<<estado<<","<<action<<"="<<celda<<endl;
                 // }
                 if(celda[0]=='s'){
                     //reduceTo, isReduce,estado,stack,boolAcepted
                     auto p = new ParseCell{"", false, estado, stack<string>(), false};
-                    //int, strign , parcell
-                    slr1[estado][result[0][countCell]] = p;
+                    // //int, strign , parcell
+                    slr1[estado][action] = p;
                 }
                 else if (celda[0]=='r'){
                      vector<string> vecAux = split(celda, " ");
@@ -114,26 +114,24 @@ int main()
                             stack_.push(vecAux[j]);
                         }
                       auto p = new ParseCell{vecAux[1], true, -1, stack_, false};
-                      slr1[estado][result[0][countCell]] = p;
+                      slr1[estado][action] = p;
                 }
-                else if (allDigits(celda))
+                else if (is_number(celda))
                 {
-                    auto p = new ParseCell{"", false, stoi(celda), stack<string>(), false};
-                    slr1[estado][result[0][countCell]] = p;
+                    auto p = new ParseCell{"", false,stoi(celda), stack<string>(), false};
+                    slr1[estado][action] = p;
                 }
                 else if (celda == "acc")
                 {
-                    auto p = new ParseCell{"", false, -1, stack<string>(), true};
-                   slr1[estado][result[0][countCell]] = p;
+                   auto p = new ParseCell{"", false, -1, stack<string>(), true};
+                   slr1[estado][action] = p;
                 }
 
             countCell++;
         }
-        cout<<endl;
-
+        // cout<<endl;
     }
-
-    auto a =slr1[31]["tausend"];
-    if(a) a->printReduce();
+    auto x =slr1[31]["tausend"]->reduce;
    
+    while (!x.empty()) { auto top_ = x.top(); cout << top_ << endl; x.pop(); } 
 }

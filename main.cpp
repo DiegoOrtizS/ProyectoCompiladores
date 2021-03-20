@@ -1,9 +1,12 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <vector>
 #include <string> 
 #include <algorithm>
 #include <unordered_map>
 #include <stack>
+#include <regex>
 
 #define DEBUG false
 
@@ -45,6 +48,28 @@ void removeByValue(vector<T> &v, T value)
             return;
         }
     }
+}
+
+vector<string> split(const string& str, const string& delim)
+{
+	vector<string> tokens;
+	size_t prev = 0, pos = 0;
+	do
+	{
+		pos = str.find(delim, prev);
+		if (pos == string::npos)
+		{
+			pos = str.length();
+		}
+		string token = str.substr(prev, pos - prev);
+		if (!token.empty())
+		{
+			tokens.push_back(token);
+		}
+		prev = pos + delim.length();
+	} while (pos < str.length() && prev < str.length());
+
+	return tokens;
 }
 
 class Token
@@ -312,15 +337,6 @@ class Lexer
                 }
             }
             
-            /*
-            for (auto it = errors.begin(); it != errors.end(); ++it)
-            {
-                if (it->second != '\0')
-                {
-                    ++contErrors;
-                }
-            }*/
-
             if (DEBUG)
             {
                 if (contErrors == 0)
@@ -370,6 +386,7 @@ struct ParseCell {
     bool isReduce;
     int estado;
     stack<string> reduce; // Z1-> Z2 Z3  FIFO
+    bool isAcepted;
 
     void printReduce(){
         cout<<"Estado: "<<estado<<endl;
@@ -385,25 +402,106 @@ struct ParseCell {
     }
 };
 
+class ReadFile
+{
+    private:
+        ifstream file;
 
+        bool is_number(const std::string& s)
+        {
+            std::string::const_iterator it = s.begin();
+            while (it != s.end() && std::isdigit(*it)) ++it;
+            return !s.empty() && it == s.end();
+        }
+
+    public:
+        unordered_map<int, unordered_map<string, ParseCell*>> slr1;
+       
+
+        ReadFile() {};
+        void readTable(string nombre) 
+        { 
+            file.open(nombre);
+            vector<vector<string>> result;
+            while(!file.eof())
+                {
+                    string line;
+                    getline(file,line);
+                    std::istringstream ss(line);
+                    std::string token;
+                    vector<string> playerInfoVector;
+                    while(std::getline(ss, token, ',')) {
+                        playerInfoVector.push_back(token);
+                        // cout<<token<<" ";
+                    }
+                    // cout<<endl;
+                    result.push_back(playerInfoVector);
+                }
+            result.erase(result.begin());
+
+            for (auto itrow=result.begin()+1;itrow!=result.end();itrow++){
+                auto col = *(itrow);
+                auto estado = stoi(col[0]);
+                // cout<<col[0]<<endl;
+                int countCell=1;
+                for (auto itcol =col.begin()+1;itcol!=col.end();itcol++){
+                        auto celda= *(itcol);
+                        celda= regex_replace(celda, regex("\r"), "");
+                        auto action=regex_replace(result[0][countCell],regex("\r"), "");
+                        if(celda[0]=='s'){
+                            //reduceTo, isReduce,estado,stack,boolAcepted
+                            auto goTo = stoi(celda.substr(1,celda.size() - 1));
+                            auto p = new ParseCell{"", false, goTo, stack<string>(), false};
+                            // //int, strign , parcell
+                            slr1[estado][action] = p;
+                        }
+                        else if (celda[0]=='r'){
+                            vector<string> vecAux = split(celda, " ");
+                            stack<string> stack_;
+                            for (int j = 3; j < vecAux.size() - 1; ++j)
+                                {
+                                    // cout<<vecAux[j]<<" ";
+                                    stack_.push(vecAux[j]);
+                                }
+                            auto p = new ParseCell{vecAux[1], true, -1, stack_, false};
+                            slr1[estado][action] = p;
+                        }
+                        else if (is_number(celda))
+                        {
+                            auto p = new ParseCell{"", false,stoi(celda), stack<string>(), false};
+                            slr1[estado][action] = p;
+                        }
+                        else if (celda == "acc")
+                        {
+                        auto p = new ParseCell{"", false, -1, stack<string>(), true};
+                        slr1[estado][action] = p;
+                        }
+
+                    countCell++;
+                }
+            }
+        };
+
+        ~ReadFile() {};
+
+};
 
 class Parser : public Lexer
 {
 private:
 	int state;
 	int nextState;
-    unordered_map<int, unordered_map<string, ParseCell*>> slr1;
-    // func, 0                  
-	//Lexer lex;
+    ReadFile rf;
 public:
 
 	Parser(string cadena) 
-	{ 
+	{
 	    tokenizeString(cadena);
 	    if (isValid())
 	    {
-	        cout << "Sin errores léxicos\n";
-            buildSlr();
+            rf.readTable("tabla.csv");
+            cout << "Sin errores léxicos\n";
+            processParse();
 	    }
 	    else
 	    {
@@ -411,20 +509,8 @@ public:
 	    }
 	};
 
-    template<typename... A>
-    void inserIntoSRL(string cadena,int estado, ParseCell* obj, A... args)
-    {   
-        (obj->reduce.push(args),...);
-        slr1[estado][cadena] = obj;
-        //obj.printReduce();
-    }
-
-    void buildSlr(){
-        inserIntoSRL("acht", 16, new ParseCell{"Z1",true,-1},"ein","hola");
-    }
-    
 	~Parser() {};
-    
+
     void processParse(){
 
         stack< pair<string,int>> pila;
@@ -438,56 +524,81 @@ public:
             cadenaPila.push(tokens[i].getCadena());
         }
 
-        // ParseCell* obj = slr1[15]["acht"];
-        // if(!obj) cout<<"No existe"<<endl;
-        // else cout<<"Existe"<<endl;
-
         while (!pila.empty())
         {
             auto top = pila.top();
             auto tmpTerminal=cadenaPila.top();
-            ParseCell* obj = slr1[top.second][tmpTerminal];
-            // obj->printReduce();
-            //falta cuando el top.firt == "accept" break cout Cadena Aceptada.
-            if(top.first=="acc")
-            {
-                cout<<"Cadena ACeptada"<<endl;
-                break;
-            }
+            
+            ParseCell* obj = rf.slr1[top.second][tmpTerminal];    
+            cout<<top.second<<" "<<tmpTerminal<<endl;
+            //muere
             if(!obj) 
             {
                 cout<<"La cadena No es Aceptada"<<endl;
                 break;
             }
-            if(!obj->isReduce)
-            {
-                //$0zwie0
-                pila.push(make_pair(tmpTerminal,obj->estado));
-                cadenaPila.pop();
-            }
             else{
-                if(reducePila(pila,obj)) {
-                    cout<<"La cadena No es Aceptada";
+                // obj->printReduce();
+                if(obj->isAcepted){
+                    cout<<"La cadena Es aceptada"<<endl;
                     break;
                 }
+                else if(!obj->isReduce)
+                {
+                    //$0zwie0
+                    pila.push(make_pair(tmpTerminal,obj->estado));
+                    cadenaPila.pop();
+                }
+                else{
+                    if(reducePila(pila,obj)) {
+                        cout<<"La cadena No es Aceptada no se puede reducir";
+                        break;
+                    }
+                }    
             }
     
         }
     }
 
+    // void PrintStack(stack<pair<string,int>> s)
+    //     {
+    //         if (s.empty()) 
+    //             return;
+    //         auto x = s.top();
+    //         s.pop();
+    //         PrintStack(s);
+    //         cout << x.first << " "<<x.second;
+    //         s.push(x);
+    //     }
+
+    //     void PrintStackString(stack<string> s)
+    //     {
+    //         if (s.empty())
+    //             return;
+    //         auto x = s.top();
+    //         s.pop();
+    //         PrintStackString(s);
+    //         cout << x<<" ";
+    //         s.push(x);
+    //     }
+
+
     bool reducePila(stack<pair<string,int>>&pila, ParseCell* obj){
 
-            while (obj->reduce.empty()){
+            while (!obj->reduce.empty()){
                 auto toDelete = obj->reduce.top();
-                if(toDelete == (pila.top().first)){
+                if(toDelete == (pila.top().first))
+                {
                     pila.pop();
                     obj->reduce.pop();
-                }else{
+                }
+                else
+                {
                     return true;
                 }
             }
             auto current = (pila.top()).second;
-            auto goTo = slr1[current][obj->reduceTo];
+            auto goTo = rf.slr1[current][obj->reduceTo];
             if(!goTo) return true;
             pila.push(make_pair(obj->reduceTo, goTo->estado));
             return false;
@@ -524,11 +635,16 @@ public:
 
 int main()
 {
-	//("azweitb")
+    // ReadFile rf;
+    // rf.readTable("tablaSlr.csv");
+    // auto a =rf.slr1[31]["tausend"];
+    // if(a) a->printReduce();
+    //rf.getUMap()
+	//("azweitb")s32
 	// Lexer
 	//Lexer lex("zweitausendneunhundertsechsundsiebzig");
-    Parser par("zweitausendneunhundertsechsundsiebzig");
-    par.processParse();
+    Parser par("zweihundertzweiundzwanzigtausendvierhundertsiebzehn");
+    //par.processParse();
     //Lexer lex("sechssig");
     //Lexer lex("
     //sechssig");
