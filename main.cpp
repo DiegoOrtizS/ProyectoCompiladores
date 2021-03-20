@@ -362,11 +362,7 @@ class Lexer
         vector<Token> getTokens() { return tokens; }
         void printTokens()
         {
-            /*
-            for (auto it = tokens.begin(); it != tokens.end(); ++it)
-            {
-                cout << it->getKinds() << endl;
-            }*/
+
             for (int i = 0; i < tokens.size(); ++i)
             {
                 cout << tokens[i].getCadena() << endl;
@@ -432,9 +428,7 @@ class ReadFile
                     vector<string> playerInfoVector;
                     while(std::getline(ss, token, ',')) {
                         playerInfoVector.push_back(token);
-                        // cout<<token<<" ";
-                    }
-                    // cout<<endl;
+                    };
                     result.push_back(playerInfoVector);
                 }
             result.erase(result.begin());
@@ -559,29 +553,6 @@ public:
     
         }
     }
-
-    // void PrintStack(stack<pair<string,int>> s)
-    //     {
-    //         if (s.empty()) 
-    //             return;
-    //         auto x = s.top();
-    //         s.pop();
-    //         PrintStack(s);
-    //         cout << x.first << " "<<x.second;
-    //         s.push(x);
-    //     }
-
-    //     void PrintStackString(stack<string> s)
-    //     {
-    //         if (s.empty())
-    //             return;
-    //         auto x = s.top();
-    //         s.pop();
-    //         PrintStackString(s);
-    //         cout << x<<" ";
-    //         s.push(x);
-    //     }
-
 
     bool reducePila(stack<pair<string,int>>&pila, ParseCell* obj){
 
