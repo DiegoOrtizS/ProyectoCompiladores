@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <string>
+#include <string> 
 #include <algorithm>
 #include <unordered_map>
+#include <stack>
 
-#define DEBUG true
+#define DEBUG false
 
 using namespace std;
 
@@ -16,8 +17,9 @@ enum class Kind {
     Z34 = 34,
 	Z5 = 5,
 	Z6 = 6,
+    /*
 	drei = 7,
-	zehn = 8,
+	zehn = 8,*/
 	zig = 9,
 	ssig = 10,
 	und = 11,
@@ -65,8 +67,10 @@ public:
 
 class Lexer
 {
-    private:
+    protected:
         vector<Token> tokens;
+
+    private:
         unordered_map<int, char> errors;
         int contErrors = 0;
         //vector<pair<char, int>> errors;
@@ -123,6 +127,7 @@ class Lexer
             return (subStr == "tausend");
         }
 
+        /*
         bool is_drei(string subStr)
         {
             return (subStr == "drei");
@@ -131,11 +136,11 @@ class Lexer
         bool is_zehn(string subStr)
         {
             return (subStr == "zehn");
-        }
+        }*/
         
         bool is_zig(string subStr)
         {
-            return (subStr ==  "zig");
+            return (subStr == "zig");
         }
 
         bool is_ssig(string subStr)
@@ -168,11 +173,11 @@ class Lexer
             for (int i = 0; i < cadena.size(); ++i)
             {
                 string subCadena = "";
-                bool z1, z2, z34, zS, z5, z6, drei, zehn, zig, ssig, und, zwan;
+                bool z1, z2, z34, zS, z5, z6, zig, ssig, und, zwan;
                 
                 for (int j = i; j < cadena.size(); ++j)
                 {
-                    z1 = z2 = z34 = zS = z5 = z6 = drei = zehn = zig = ssig = und = zwan = false;
+                    z1 = z2 = z34 = zS = z5 = z6 = zig = ssig = und = zwan = false;
                     vector<Kind> kinds_;
                     subCadena += cadena[j];
 
@@ -184,8 +189,8 @@ class Lexer
                     zS   = is_ZS(subCadena);
                     z5   = is_Z5(subCadena);
                     z6   = is_Z6(subCadena);
-                    drei = is_drei(subCadena);
-                    zehn = is_zehn(subCadena);
+                    //drei = is_drei(subCadena);
+                    //zehn = is_zehn(subCadena);
                     zig  = is_zig(subCadena);
                     ssig = is_ssig(subCadena);
                     und  = is_und(subCadena);
@@ -215,6 +220,7 @@ class Lexer
                     {    
                         kinds_.push_back(Kind::Z6);
                     }
+                    /*
                     if (drei)
                     {    
                         kinds_.push_back(Kind::drei);
@@ -222,7 +228,7 @@ class Lexer
                     if (zehn)
                     {    
                         kinds_.push_back(Kind::zehn);
-                    }
+                    }*/
                     if (zig)
                     {    
                         kinds_.push_back(Kind::zig);
@@ -240,7 +246,7 @@ class Lexer
                         kinds_.push_back(Kind::zwan);
                     }
 
-                    if (z1 || z2 || z34 || zS || z5 || z6 || drei || zehn || zig || ssig || und || zwan)
+                    if (z1 || z2 || z34 || zS || z5 || z6 || zig || ssig || und || zwan)
                     {
                         Token t(subCadena, kinds_);
                         tokens.push_back(t);
@@ -258,7 +264,7 @@ class Lexer
                         subCadena = "";                        
                     }
                 }
-                if (!(z1 || z2 || z34 || zS || z5 || z6 || drei || zehn || zig || ssig || und || zwan))
+                if (!(z1 || z2 || z34 || zS || z5 || z6 || zig || ssig || und || zwan))
                 {
                     //cout << cadena[i] << endl;
                     //errors.push_back(make_pair(cadena[i], i));
@@ -315,20 +321,23 @@ class Lexer
                 }
             }*/
 
-            if (contErrors == 0)
+            if (DEBUG)
             {
-                cout << "Cadena válida\n";
-            }
-            else
-            {
-                if (contErrors == 1) cout << "Cadena NO válida porque tiene " << contErrors << " error, el cual es \n";
-                else cout << "Cadena NO válida porque tiene " << contErrors << " errores, los cuales son:\n";
-                
-                for (auto it = errors.begin(); it != errors.end(); ++it)
+                if (contErrors == 0)
                 {
-                    //if (it->second != '\0')
+                    cout << "Cadena válida\n";
+                }
+                else
+                {
+                    if (contErrors == 1) cout << "Cadena NO válida porque tiene " << contErrors << " error, el cual es \n";
+                    else cout << "Cadena NO válida porque tiene " << contErrors << " errores, los cuales son:\n";
+                    
+                    for (auto it = errors.begin(); it != errors.end(); ++it)
                     {
-                        cout << "Error pos " << it->first << ": " << it->second << endl;
+                        //if (it->second != '\0')
+                        {
+                            cout << "Error pos " << it->first << ": " << it->second << endl;
+                        }
                     }
                 }
             }
@@ -355,29 +364,137 @@ class Lexer
         }
 };
 
+
+struct ParseCell {    
+    string reduceTo;
+    bool isReduce;
+    int estado;
+    stack<string> reduce; // Z1-> Z2 Z3  FIFO
+
+    void printReduce(){
+        cout<<"Estado: "<<estado<<endl;
+        cout<<"isReduce: "<<isReduce<<endl;
+        if(isReduce){
+            cout<<reduceTo<<"-->";
+            while(!reduce.empty()) {
+                cout << reduce.top()<<" ";
+                reduce.pop();
+            }
+            cout<<endl;
+        }
+    }
+};
+
+
+
 class Parser : public Lexer
 {
 private:
 	int state;
 	int nextState;
+    unordered_map<int, unordered_map<string, ParseCell*>> slr1;
+    // func, 0                  
 	//Lexer lex;
 public:
+
 	Parser(string cadena) 
 	{ 
-	    tokenizeString(cadena); 
+	    tokenizeString(cadena);
 	    if (isValid())
 	    {
 	        cout << "Sin errores léxicos\n";
+            buildSlr();
 	    }
 	    else
 	    {
 	        cout << "Con errores léxicos\n";
 	    }
 	};
+
+    template<typename... A>
+    void inserIntoSRL(string cadena,int estado, ParseCell* obj, A... args)
+    {   
+        (obj->reduce.push(args),...);
+        slr1[estado][cadena] = obj;
+        //obj.printReduce();
+    }
+
+    void buildSlr(){
+        inserIntoSRL("acht", 16, new ParseCell{"Z1",true,-1},"ein","hola");
+    }
+    
 	~Parser() {};
+    
+    void processParse(){
+
+        stack< pair<string,int>> pila;
+        pila.push(make_pair("$",0));
+        // //zweitausendneunhundertsechsundsiebzig
+        
+        stack<string> cadenaPila;
+        cadenaPila.push("$");
+        for (int i = tokens.size()-1; i >= 0; --i)
+        {
+            cadenaPila.push(tokens[i].getCadena());
+        }
+
+        // ParseCell* obj = slr1[15]["acht"];
+        // if(!obj) cout<<"No existe"<<endl;
+        // else cout<<"Existe"<<endl;
+
+        while (!pila.empty())
+        {
+            auto top = pila.top();
+            auto tmpTerminal=cadenaPila.top();
+            ParseCell* obj = slr1[top.second][tmpTerminal];
+            // obj->printReduce();
+            //falta cuando el top.firt == "accept" break cout Cadena Aceptada.
+            if(top.first=="acc")
+            {
+                cout<<"Cadena ACeptada"<<endl;
+                break;
+            }
+            if(!obj) 
+            {
+                cout<<"La cadena No es Aceptada"<<endl;
+                break;
+            }
+            if(!obj->isReduce)
+            {
+                //$0zwie0
+                pila.push(make_pair(tmpTerminal,obj->estado));
+                cadenaPila.pop();
+            }
+            else{
+                if(reducePila(pila,obj)) {
+                    cout<<"La cadena No es Aceptada";
+                    break;
+                }
+            }
+    
+        }
+    }
+
+    bool reducePila(stack<pair<string,int>>&pila, ParseCell* obj){
+
+            while (obj->reduce.empty()){
+                auto toDelete = obj->reduce.top();
+                if(toDelete == (pila.top().first)){
+                    pila.pop();
+                    obj->reduce.pop();
+                }else{
+                    return true;
+                }
+            }
+            auto current = (pila.top()).second;
+            auto goTo = slr1[current][obj->reduceTo];
+            if(!goTo) return true;
+            pila.push(make_pair(obj->reduceTo, goTo->estado));
+            return false;
+    };
 	
     /*
-	// FINAL: SIN CON CONFLICTOS (81 ESTADOS o 69 estados)
+	// FINAL: SIN CON CONFLICTOS (81 ESTADOS)
         S -> Z1 | Z2 | zwan | ZS | Z5 | Z6 | Z7 | Z8 | Z9 | Z11 | Z12 | Z13 | Z14 | U
         Z1 -> ein | zwei | drei | sechs | sieben | Z34
         Z2 -> drei zehn | Z34 zehn | ZS zehn | zehn | elf | zwölf
@@ -404,35 +521,38 @@ public:
 	*/
 };
 
+
 int main()
 {
 	//("azweitb")
 	// Lexer
 	//Lexer lex("zweitausendneunhundertsechsundsiebzig");
+    Parser par("zweitausendneunhundertsechsundsiebzig");
+    par.processParse();
     //Lexer lex("sechssig");
     //Lexer lex("
     //sechssig");
     //Lexer lex("sechssigw");ovector<strin g tokens >={"zweit","tausend"};r 
     // TESTS CON SECHS y SIEBEN
-    Lexer lex1("sechsssig");
-    lex1.printTokens();
-    Lexer lex2("sechssechs");
-    lex2.printTokens();
-    Lexer lex3("sechssssig");
-    lex3.printTokens();    
-    Lexer lex4("sechssieb");
-    lex4.printTokens(); 
-    Lexer lex5("sechssieben");
-    lex5.printTokens();
-    Lexer lex6("siebensieben");
-    lex6.printTokens();
-    // Cadenas del proyecto
-    Parser parserP1("fünftausendzweihundertneunundfünfzig");
-    parserP1.printTokens();
-    Parser parserP2("zweitausendneunhundertsechsundsiebzig");
-    parserP2.printTokens();
-    Parser parserP3("zweihundertzweiundzwanzigtausendvierhundertsiebzehn");
-    parserP3.printTokens();
+    // Lexer lex1("sechsssig");
+    // lex1.printTokens();
+    // Lexer lex2("sechssechs");
+    // lex2.printTokens();
+    // Lexer lex3("sechssssig");
+    // lex3.printTokens();    
+    // Lexer lex4("sechssieb");
+    // lex4.printTokens(); 
+    // Lexer lex5("sechssieben");
+    // lex5.printTokens();
+    // Lexer lex6("siebensieben");
+    // lex6.printTokens();
+    // // Cadenas del proyecto
+    // Parser parserP1("fünftausendzweihundertneunundfünfzig");
+    // parserP1.printTokens();
+    // Parser parserP2("zweitausendneunhundertsechsundsiebzig");
+    // parserP2.printTokens();
+    // Parser parserP3("zweihundertzweiundzwanzigtausendvierhundertsiebzehn");
+    // parserP3.printTokens();
 
     // t b und 
 

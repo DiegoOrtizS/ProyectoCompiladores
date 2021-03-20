@@ -4,6 +4,10 @@
         "xstring": "cpp",
         "xutility": "cpp",
         "utility": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "unordered_map": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "stack": "cpp"
     }
 }

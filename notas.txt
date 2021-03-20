@@ -99,11 +99,11 @@
 	// AÚN CON CONFLICTOS (75 ESTADOS)
 	S -> Z1 | Z2 | zwan | Z34 | Z5 | Z6 | Z7 | Z8 | Z9 | Z11 | Z12 | Z13 | Z14 | U
 	Z1 -> ein | zwei | drei | vier | fünf | sechs | sieben | acht | neun
-	Z2 -> dreizehn | Z34 zehn
+	Z2 -> drei zehn | Z34 zehn
 	Z34 -> vier | fünf | sech | sieb | acht | neun
 	Z5 -> hundert
 	Z6 -> tausend
-	Z7 -> zwanzig | Z34 zig | dreissig
+	Z7 -> zwan zig | Z34 zig | drei ssig
 	Z8 -> U Z7
 	Z9 -> Z1 Z5
 	Z10 -> Z2 Z5
