@@ -446,8 +446,6 @@ class ReadFile
 class Parser : public Lexer
 {
 private:
-	int state;
-	int nextState;
     ReadFile rf;
 public:
 
