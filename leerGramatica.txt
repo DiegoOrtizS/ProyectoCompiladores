@@ -1,0 +1,18 @@
+SP -> S|
+S -> Z1 | Z2 | zwan | ZS | Z34 | Z5 | Z6 | Z7 | Z8 | Z9 | Z11 | Z12 | Z13 | Z14 | U|
+Z1 -> ein | zwei | drei | sechs | sieben|
+Z2 -> drei zehn | Z34 zehn | ZS zehn | zehn | elf | zwölf|
+Z34 -> vier | fünf | acht | neun|
+ZS -> sech | sieb|
+Z5 -> hundert|
+Z6 -> tausend|
+Z7 -> zwan zig | Z34 zig | ZS zig | drei ssig|
+Z8 -> U Z7|
+Z9 -> Z1 Z5 | Z34 Z5|
+Z10 -> Z2 Z5|
+Z11 -> Z5 Z1 | Z5 Z2 | Z5 Z7 | Z5 Z8 | Z9 Z1 | Z9 Z2 | Z9 Z7 | Z9 Z8 | Z5 Z34 | Z9 Z34|
+Z12 -> Z10 Z1 | Z10 Z2 | Z10 Z7 | Z10 Z8 | Z10 Z34|
+Z13 -> Z1 Z6 | Z2 Z6 | Z7 Z6 | Z8 Z6 | Z9 Z6 | Z11 Z6 | Z34 Z6|
+Z14 -> Z6 Z1 | Z6 Z2 | Z6 Z7 | Z6 Z8 | Z6 Z9 | Z6 Z11 | Z13 Z1 | Z13 Z2 | Z13 Z7 | Z13 Z8 | Z13 Z9 | Z13 Z11 | Z6 Z34 | Z13 Z34|
+U -> Z1 und | Z34 und|
+X

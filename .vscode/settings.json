@@ -53,6 +53,20 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "xstring": "cpp",
+        "stack": "cpp",
+        "iomanip": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp",
+        "xtree": "cpp",
+        "xhash": "cpp",
+        "xutility": "cpp",
+        "xtr1common": "cpp",
+        "locale": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "xloctime": "cpp"
     }
 }
