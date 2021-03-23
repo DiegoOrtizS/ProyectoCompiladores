@@ -46,6 +46,7 @@ struct AFD
     int cont  = 0;
     int cont2 = 0;
     unordered_map<int, State*> states;
+    unordered_map<string,vector<State*>> _allTransition;
 
     void printAFD(ofstream &out)
     {
@@ -242,9 +243,10 @@ class ReadGrammar
                 // cout << "ENTER fillPointRights\n";
                 fillPointRights(currentState);
                 // cout << "FINISH fillPointRights\n";
-
+                // TRANSICIÓN CON LO QUE ESTÁ A LA DERECHA DEL PUNTO
                 for (auto it : rightToPoint)
                 {
+                    bool estadoCreado = true;
                     vector<pair<string, string>> nuevasReglas;
                     for (int i = 0; i < currentState->reglas.size(); ++i)
                     {
@@ -261,62 +263,24 @@ class ReadGrammar
                             }
                         }
                     }
-                    // cout << "FINISH NUEVAS REGLAS\n";
-
-                    // CUANDO YA EXISTE UN ESTADO CON ESAS REGLAS, FALTA
-                    // for (auto it2 : afd->states)
-                    // {
-                    //     int compareRules = 0;
-                    //     vector<pair<string, string>> reglasAct = it2.second->reglas;
-
-                    //     if (reglasAct.size() == nuevasReglas.size())
-                    //     {
-                    //         for (int i = 0; i < reglasAct.size(); ++i)
-                    //         {
-                    //             for (int j = 0; j < nuevasReglas.size(); ++j)
-                    //             {
-                    //                 if (reglasAct[i] == nuevasReglas[i])
-                    //                 {
-                    //                     ++compareRules;
-                    //                     break;
-                    //                 }
-                    //             }
-                    //         }
-
-                    //         if (compareRules == nuevasReglas.size())
-                    //         {
-                    //             // afd->states[afd->cont - 1]
-                    //             // it2.second->llegada[it] = ;
-                    //             // it2.second->llegada[it] = afd->states[afd->cont];
-                    //             // afd->states[afd->cont]->transiciones
-                    //             // afd->states[afd->cont]->transiciones[it] = afd->states[afd->cont];  
-                    //             cout << "REGLAS YA EXISTENTES\n";                          
-                    //             break;
-                    //         }
-                    //     }
-                    // }                
-                    // Para que un estado sea terminal
-                    // debe existir una sola regla y que esta termine en punto
-                    // SE CREA EL ESTADO 1
-                    State* nuevoEstado = new State{nuevasReglas, 
-                    nuevasReglas.size() == 1 && split(nuevasReglas[0].second, " ").back() == ".", 
-                    unordered_map<string, State*>(), unordered_map<string, State*>() };
-                    afd->states[afd->cont] = nuevoEstado;
-                    newStates[afd->cont] = nuevoEstado;
-
-                    // cout << it << endl;
-                    afd->states[afd->cont]->llegada[it] = afd->states[z];
-                    afd->states[z]->transiciones[it] = afd->states[afd->cont];
-                    afd->cont++;
-                }
-
-                // Iterar sobre los nuevos estados
-                for (auto F : newStates)
-                {
-                    currentState = F.second;
+                    // SI ES QUE A LA DERECHA DEL PUNTO DESPUÉS DE MOVERLO
+                    // HAY UN NO TERMINAL Y ESTE SE ENCUENTRA
+                    // PRESENTE EN LAS REGLAS DEL ESTADO POR DONDE VINE
+                    // TENEMOS QUE AGREGARLE SUS REGLAS A NUEVAS REGLAS
                     pointsLeftAndRight.clear();
+                    bool _isTerminal = true;  
+
+                    for (int i = 0; i < nuevasReglas.size(); ++i)
+                    {
+                        if (nuevasReglas[i].second.back() != '.')
+                        {
+                            _isTerminal = false;
+                        }
+                    }                    
                     // Llenar right to points después de la movida.
-                    fillPointLeftAndRight(currentState);
+                    State* nuevoEstado = new State{nuevasReglas, _isTerminal, 
+                    unordered_map<string, State*>(), unordered_map<string, State*>() };                    
+                    fillPointLeftAndRight(nuevoEstado);
 
                     // Itero sobre los nuevos que están a la derecha del punto
                     for (auto it : pointsLeftAndRight)
@@ -329,29 +293,72 @@ class ReadGrammar
                             {
                                 // Z3 -> Z8 . Z6
                                 // it.first = Z8, it.second = Z6
-                                auto stateFrom = currentState->llegada[it.first];
+                                // auto stateFrom = currentState->llegada[it.first];
                                 // cout << stateFrom << endl;
-
-                                if (stateFrom != nullptr)
+                                
+                                // if (currentState != nullptr)
+                                for (int j = 0; j < currentState->reglas.size(); ++j)
                                 {
-                                    for (int j = 0; j < stateFrom->reglas.size(); ++j)
+                                    // Encuentro las reglas que estaba buscando
+                                    // en el estado de donde vine
+                                    if (currentState->reglas[j].first == it.second)
                                     {
-                                        // Encuentro las reglas que estaba buscando
-                                        // en el estado de donde vine
-                                        if (stateFrom->reglas[j].first == it.second)
-                                        {
-                                            // Añado esas reglas al currentState
-                                            currentState->reglas.push_back(stateFrom->reglas[j]);
-                                        }
+                                        // Añado esas reglas al currentState
+                                        nuevoEstado->reglas.push_back(currentState->reglas[j]);
                                     }
                                 }
                             }
                         }
+                    }                    
+
+
+                    // CUANDO YA EXISTE UN ESTADO CON ESAS REGLAS
+                    for (auto estadoIterado : afd->_allTransition[it])
+                    {
+                        if (estadoIterado->reglas.size() == nuevoEstado->reglas.size())
+                        {
+                            int compareRules = 0;
+                            for (int i = 0; i < nuevoEstado->reglas.size(); ++i)
+                            {
+                                for (int j = 0; j < nuevoEstado->reglas.size(); ++j)
+                                {
+                                    if (nuevoEstado->reglas[i] == estadoIterado->reglas[i])
+                                    {
+                                        ++compareRules;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (compareRules == nuevoEstado->reglas.size())
+                            {
+                                // Transición hacia el estadoIterado desde e
+                                // afd->states[afd->cont]->llegada[it] = afd->states[z];
+                                // afd->states[z]->transiciones[it] = afd->states[afd->cont];
+                                estadoCreado = false;
+                                estadoIterado->llegada[it] = afd->states[z];
+                                afd->states[z]->transiciones[it] = estadoIterado;
+                            }                            
+                        }
+                    }
+
+                    if (estadoCreado)
+                    {
+                        afd->states[afd->cont] = nuevoEstado;
+                        newStates[afd->cont] = nuevoEstado;
+                        afd->_allTransition[it].push_back(nuevoEstado);
+
+                        // cout << it << endl;
+                        afd->states[afd->cont]->llegada[it] = afd->states[z];
+                        afd->states[z]->transiciones[it] = afd->states[afd->cont];
+                        afd->cont++;
                     }
                 }
-                // for (int i = 1; i < afd->cont; ++i)
+
+                // Iterar sobre los nuevos estados
+                // for (auto F : newStates)
                 // {
-                //     currentState = afd->states[i];
+                //     currentState = F.second;
                 //     pointsLeftAndRight.clear();
                 //     // Llenar right to points después de la movida.
                 //     fillPointLeftAndRight(currentState);
@@ -387,8 +394,7 @@ class ReadGrammar
                 //         }
                 //     }
                 // }
-
-                // afd->printAFD();
+                
             }
             
             afd->printAFD(outputFile);
