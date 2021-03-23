@@ -1,3 +1,4 @@
+  
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -283,13 +284,13 @@ class ReadGrammar
                     fillPointLeftAndRight(nuevoEstado);
 
                     // Itero sobre los nuevos que están a la derecha del punto
-                    for (auto it : pointsLeftAndRight)
+                    for (auto it2 : pointsLeftAndRight)
                     {
                         // Si el nuevo que está a la derecha del punto 
                         // es un no terminal.
-                        if (it.second != "")
+                        if (it2.second != "")
                         {
-                            if (nonTerminals.find(it.second) != nonTerminals.end())
+                            if (nonTerminals.find(it2.second) != nonTerminals.end())
                             {
                                 // Z3 -> Z8 . Z6
                                 // it.first = Z8, it.second = Z6
@@ -301,7 +302,7 @@ class ReadGrammar
                                 {
                                     // Encuentro las reglas que estaba buscando
                                     // en el estado de donde vine
-                                    if (currentState->reglas[j].first == it.second)
+                                    if (currentState->reglas[j].first == it2.second)
                                     {
                                         // Añado esas reglas al currentState
                                         nuevoEstado->reglas.push_back(currentState->reglas[j]);
@@ -405,13 +406,11 @@ class ReadGrammar
             //     afd->state[i].second;
             // }
             // afd->states[afd->cont++]
-
             // cout << "START RULES\n";
             // for (auto& it: afd->states[0]->reglas) 
             // {
             //     cout << it.first << " -> " << it.second << endl;
             // }
-
             // cout << "NON TERMINALS\n";
             // for (auto it : nonTerminals)
             // {
