@@ -455,7 +455,7 @@ Z2 -> . zehn
 Z2 -> . elf
 Z2 -> . zwölf
 Z34 -> . vier
-Z34 -> . fünf
+Z34 -> . fünfgit status
 Z34 -> . acht
 Z34 -> . neun
 Z7 -> . zwan zig
