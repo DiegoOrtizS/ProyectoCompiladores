@@ -468,7 +468,7 @@ public:
 
     void processParse()
     {
-        cout << "Pila de análisis sintáctico" << setw(30) << setfill(' ') << "Entrada" << setw(30) << setfill(' ') << "Acción\n";
+        cout << "Pila de análisis sintáctico" << setw(50) << setfill(' ') << "Entrada" << setw(50) << setfill(' ') << "Acción\n";
 
         stack<pair<string, int>> pila;
         pila.push(make_pair("$",0));
@@ -487,13 +487,14 @@ public:
             
             ParseCell* obj = rf.slr1[top.second][tmpTerminal];
             reverseAndPrintStack(pila);
-            cout << setw(30) << setfill(' ');
+            cout << setw(50) << setfill(' ');
             printStack(cadenaPila);
-            cout << setw(30) << setfill(' ');
+            cout << setw(50) << setfill(' ');
 
             if(!obj) 
             {
-                cout<<"La cadena no es aceptada"<<endl;
+                cout << "No existe regla " << top.second << " con " << tmpTerminal << ", por lo que"
+                << "la cadena no es aceptada" << endl;
                 break;
             }
             else
@@ -512,9 +513,9 @@ public:
                 }
                 else
                 {
-                    if(reducePila(pila, obj)) 
+                    if (reducePila(pila, obj)) 
                     {
-                        cout<<"La cadena no es aceptada, no se puede reducir";
+                        cout<<"La cadena no es aceptada, no se puede realizar esa reducción";
                         break;
                     }
                 }    
@@ -577,9 +578,8 @@ public:
 
 int main()
 {
-    Parser par1("fünftausendzweihundertneunundfünfzig");                //aceptada
-    //Parser par2("zweitausendneunhundertsechsundsiebzig");               //aceptada
-    //Parser par3("zweihundertzweiundzwanzigtausendvierhundertsiebzehn"); //aceptada
- 
+    // Parser par1("fünftausendzweihundertneunundfünfzig");                //aceptada
+    // Parser par2("zweitausendneunhundertsechsundsiebzig");               //aceptada
+    // Parser par3("zweihundertzweiundzwanzigtausendvierhundertsiebzehn"); //aceptada
 	return 0;
 }

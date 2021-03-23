@@ -46,6 +46,19 @@ struct AFD
     int cont  = 0;
     int cont2 = 0;
     unordered_map<int, State*> states;
+
+    void printAFD(ofstream &out)
+    {
+        for (auto it2 : states)
+        {
+            out << "Estado: " << it2.first << endl;
+            for (auto it : it2.second->reglas)
+            {
+                out << it.first << " -> " << it.second << endl;
+            }
+            out << endl << endl;
+        }        
+    }
 };
 
 
@@ -61,6 +74,7 @@ class ReadGrammar
 {
     private:
         ifstream file;
+        ofstream outputFile;
         set<string> nonTerminals;
         set<string> terminals;
         set<string> universe;
@@ -76,7 +90,7 @@ class ReadGrammar
                 vector<string> tempE = split(currentState->reglas[i].second, " ");
                 for (int j = 0; j < tempE.size(); ++j)
                 {
-                    if (tempE[j] == ".")
+                    if (tempE[j] == "." && j+1 < tempE.size())
                     {
                         rightToPoint.emplace(tempE[j+1]);
                     }
@@ -140,6 +154,7 @@ class ReadGrammar
             vector<pair<string, string>> vec;
             vector<pair<string, string>> vecFinal;
             file.open(nombre);
+            outputFile.open("afd.txt");
 
             if (file.is_open())
             {
@@ -212,84 +227,171 @@ class ReadGrammar
             // vector<pair<string, string>> reglas
             // .first antes de la flecha
             // .second después de la flecha (ejemplo . Z1 Z3)
-            auto currentState = afd->states[0];
-            fillPointRights(currentState);
-
-            for (auto it : rightToPoint)
+            for (int z = 0; z < afd->cont; ++z)
             {
-                vector<pair<string, string>> nuevasReglas;
-                for (int i = 0; i < currentState->reglas.size(); ++i)
-                {
-                    vector<string> tempE = split(currentState->reglas[i].second, " ");
+                unordered_map<int, State*> newStates;
 
-                    for (int j = 0; j < tempE.size(); ++j)
+                // cout << afd->cont << endl;
+                if (afd->states[z]->isTerminal)
+                {
+                    continue;
+                }
+
+                auto currentState = afd->states[z];
+                rightToPoint.clear();
+                // cout << "ENTER fillPointRights\n";
+                fillPointRights(currentState);
+                // cout << "FINISH fillPointRights\n";
+
+                for (auto it : rightToPoint)
+                {
+                    vector<pair<string, string>> nuevasReglas;
+                    for (int i = 0; i < currentState->reglas.size(); ++i)
                     {
-                        if (tempE[j] == "." && tempE[j + 1] == it)
+                        vector<string> tempE = split(currentState->reglas[i].second, " ");
+
+                        for (int j = 0; j < tempE.size(); ++j)
                         {
-                            nuevasReglas.push_back(movePoint(0, i));    
+                            if (tempE[j] == "." && j + 1 < tempE.size())
+                            {
+                                if (tempE[j + 1] == it)
+                                {
+                                    nuevasReglas.push_back(movePoint(z, i));
+                                }
+                            }
                         }
                     }
+                    // cout << "FINISH NUEVAS REGLAS\n";
+
+                    // CUANDO YA EXISTE UN ESTADO CON ESAS REGLAS, FALTA
+                    // for (auto it2 : afd->states)
+                    // {
+                    //     int compareRules = 0;
+                    //     vector<pair<string, string>> reglasAct = it2.second->reglas;
+
+                    //     if (reglasAct.size() == nuevasReglas.size())
+                    //     {
+                    //         for (int i = 0; i < reglasAct.size(); ++i)
+                    //         {
+                    //             for (int j = 0; j < nuevasReglas.size(); ++j)
+                    //             {
+                    //                 if (reglasAct[i] == nuevasReglas[i])
+                    //                 {
+                    //                     ++compareRules;
+                    //                     break;
+                    //                 }
+                    //             }
+                    //         }
+
+                    //         if (compareRules == nuevasReglas.size())
+                    //         {
+                    //             // afd->states[afd->cont - 1]
+                    //             // it2.second->llegada[it] = ;
+                    //             // it2.second->llegada[it] = afd->states[afd->cont];
+                    //             // afd->states[afd->cont]->transiciones
+                    //             // afd->states[afd->cont]->transiciones[it] = afd->states[afd->cont];  
+                    //             cout << "REGLAS YA EXISTENTES\n";                          
+                    //             break;
+                    //         }
+                    //     }
+                    // }                
+                    // Para que un estado sea terminal
+                    // debe existir una sola regla y que esta termine en punto
+                    // SE CREA EL ESTADO 1
+                    State* nuevoEstado = new State{nuevasReglas, 
+                    nuevasReglas.size() == 1 && split(nuevasReglas[0].second, " ").back() == ".", 
+                    unordered_map<string, State*>(), unordered_map<string, State*>() };
+                    afd->states[afd->cont] = nuevoEstado;
+                    newStates[afd->cont] = nuevoEstado;
+
+                    // cout << it << endl;
+                    afd->states[afd->cont]->llegada[it] = afd->states[z];
+                    afd->states[z]->transiciones[it] = afd->states[afd->cont];
+                    afd->cont++;
                 }
-                // Para que un estado sea terminal
-                // debe existir una sola regla y que esta termine en punto
-                // SE CREA EL ESTADO 1
-                afd->states[afd->cont] = new State{nuevasReglas, 
-                nuevasReglas.size() == 1 && split(nuevasReglas[0].second, " ").back() == ".", 
-                unordered_map<string, State*>(), unordered_map<string, State*>() };
 
-                // cout << it << endl;
-                afd->states[afd->cont]->llegada[it] = afd->states[0];
-                afd->states[0]->transiciones[it] = afd->states[afd->cont];
-                afd->cont++;
-            }
-
-            // Iterar sobre los nuevos estados
-            for (int i = 1; i < afd->cont; ++i)
-            {
-                currentState = afd->states[i];
-                // creo que no se puede set de pairs, ya luego cambiamos eso voy a comer
-                pointsLeftAndRight.clear();
-                // Llenar right to points después de la movida.
-                fillPointLeftAndRight(currentState);
-
-                // Itero sobre los nuevos que están a la derecha del punto
-                for (auto it : pointsLeftAndRight)
+                // Iterar sobre los nuevos estados
+                for (auto F : newStates)
                 {
-                    // Si el nuevo que está a la derecha del punto 
-                    // es un no terminal.
-                    if (it.second != "")
-                    {
-                        if (nonTerminals.find(it.second) != nonTerminals.end())
-                        {
-                            // Z3 -> Z8 . Z6
-                            // it.first = Z8, it.second = Z6
-                            auto stateFrom = currentState->llegada[it.first];
+                    currentState = F.second;
+                    pointsLeftAndRight.clear();
+                    // Llenar right to points después de la movida.
+                    fillPointLeftAndRight(currentState);
 
-                            for (int j = 0; j < stateFrom->reglas.size(); ++j)
+                    // Itero sobre los nuevos que están a la derecha del punto
+                    for (auto it : pointsLeftAndRight)
+                    {
+                        // Si el nuevo que está a la derecha del punto 
+                        // es un no terminal.
+                        if (it.second != "")
+                        {
+                            if (nonTerminals.find(it.second) != nonTerminals.end())
                             {
-                                // Encuentro las reglas que estaba buscando
-                                // en el estado de donde vine
-                                if (stateFrom->reglas[j].first == it.second)
+                                // Z3 -> Z8 . Z6
+                                // it.first = Z8, it.second = Z6
+                                auto stateFrom = currentState->llegada[it.first];
+                                // cout << stateFrom << endl;
+
+                                if (stateFrom != nullptr)
                                 {
-                                    // Añado esas reglas al currentState
-                                    currentState->reglas.push_back(stateFrom->reglas[j]);
+                                    for (int j = 0; j < stateFrom->reglas.size(); ++j)
+                                    {
+                                        // Encuentro las reglas que estaba buscando
+                                        // en el estado de donde vine
+                                        if (stateFrom->reglas[j].first == it.second)
+                                        {
+                                            // Añado esas reglas al currentState
+                                            currentState->reglas.push_back(stateFrom->reglas[j]);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
+                // for (int i = 1; i < afd->cont; ++i)
+                // {
+                //     currentState = afd->states[i];
+                //     pointsLeftAndRight.clear();
+                //     // Llenar right to points después de la movida.
+                //     fillPointLeftAndRight(currentState);
 
-            for (auto it2 : afd->states)
-            {
-                cout << "Estado: " << it2.first << endl;
-                for (auto it : it2.second->reglas)
-                {
-                    cout << it.first << " -> " << it.second << endl;
-                }
-                cout << endl << endl;
+                //     // Itero sobre los nuevos que están a la derecha del punto
+                //     for (auto it : pointsLeftAndRight)
+                //     {
+                //         // Si el nuevo que está a la derecha del punto 
+                //         // es un no terminal.
+                //         if (it.second != "")
+                //         {
+                //             if (nonTerminals.find(it.second) != nonTerminals.end())
+                //             {
+                //                 // Z3 -> Z8 . Z6
+                //                 // it.first = Z8, it.second = Z6
+                //                 auto stateFrom = currentState->llegada[it.first];
+                //                 // cout << stateFrom << endl;
+
+                //                 if (stateFrom != nullptr)
+                //                 {
+                //                     for (int j = 0; j < stateFrom->reglas.size(); ++j)
+                //                     {
+                //                         // Encuentro las reglas que estaba buscando
+                //                         // en el estado de donde vine
+                //                         if (stateFrom->reglas[j].first == it.second)
+                //                         {
+                //                             // Añado esas reglas al currentState
+                //                             currentState->reglas.push_back(stateFrom->reglas[j]);
+                //                         }
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
+
+                // afd->printAFD();
             }
             
+            afd->printAFD(outputFile);
 
             /*
             // for (int i = 0; i < afd->states[0]->reglas.size(); ++i)
@@ -317,6 +419,7 @@ class ReadGrammar
             // }*/
 
             file.close();
+            outputFile.close();
         };
 };
 
