@@ -5,6 +5,7 @@
 #include <string> 
 #include <algorithm>
 #include <unordered_map>
+#include<map>
 #include <stack>
 #include <regex>
 #include <iomanip>
@@ -435,6 +436,10 @@ int main()
     // Parser par2("ASh1Sv3N5Ac2C4A", "TablaSlrTextilOp.csv");
     // Parser par3("A4Sh1Sv3N5Ac4C5A", "TablaSlrTextilOp.csv");
     Parser par4("ASh3Sv2N1Ac1C1C2C4A", "TablaSlrTextilOp.csv");
+    /*
+    En el segundo parámetro del parser, se especifica qué .csv leer, 
+    los cuales pueden ser TablaSlrTexti.csv o TablaSlrTextiOp.csv.
+    */
 
     return 0;
 }

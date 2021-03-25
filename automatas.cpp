@@ -81,8 +81,7 @@ class ReadGrammar
         set<string> universe;
         set<string> rightToPoint;
         set<string> newRightToPoint;
-        // set<pair<string, string>> pointsLeftAndRight;
-
+        
         AFD* afd = new AFD();
 
         void fillPointRights(vector<pair<string, string>> reglas, set<string> &puntoDer)
@@ -99,37 +98,6 @@ class ReadGrammar
                 }
             }            
         }
-
-        // void fillPointLeftAndRight(vector<pair<string, string>> reglas)
-        // {
-        //     for (int i = 0; i < reglas.size(); ++i)
-        //     {
-        //         // cout << reglas[i].second << endl;
-        //         vector<string> tempE = split(reglas[i].second, " ");
-        //         for (int j = 0; j < tempE.size(); ++j)
-        //         {
-        //             if (tempE[j] == ".")
-        //             {
-        //                 if (j - 1 > 0)
-        //                 {
-        //                     if (j + 1 < tempE.size())
-        //                     {
-        //                         pointsLeftAndRight.emplace(make_pair(tempE[j-1], tempE[j+1]));
-        //                     }
-        //                     else
-        //                     {
-        //                         pointsLeftAndRight.emplace(make_pair(tempE[j-1], ""));
-        //                     }
-        //                 }
-
-        //                 else
-        //                 {
-        //                     pointsLeftAndRight.emplace("", tempE[j+1]);
-        //                 }
-        //             }
-        //         }
-        //     }            
-        // }
 
         pair<string, string> movePoint(int state, int rule)
         {
@@ -177,15 +145,30 @@ class ReadGrammar
                     line = line + "|";
                     auto sepFlecha = split(line, " -> ");
                     auto sepOr = split(sepFlecha[1], "|");
-                    for (int i = 0; i < sepOr.size() - 1; ++i)
+                    
+                    if (sepOr.size() == 1)
                     {
-                        vec.push_back(make_pair(sepFlecha[0], sepOr[i]));
+                        vec.push_back(make_pair(sepFlecha[0], sepOr[0]));
                         nonTerminals.emplace(sepFlecha[0]);
-
-                        auto sepEspacio = split(sepOr[i], " ");
+                        auto sepEspacio = split(sepOr[0], " ");
                         for (int j = 0; j < sepEspacio.size(); ++j)
                         {
                             universe.emplace(sepEspacio[j]);
+                        }
+                    }
+                    
+                    else
+                    {
+                        for (int i = 0; i < sepOr.size() - 1; ++i)
+                        {
+                            vec.push_back(make_pair(sepFlecha[0], sepOr[i]));
+                            nonTerminals.emplace(sepFlecha[0]);
+    
+                            auto sepEspacio = split(sepOr[i], " ");
+                            for (int j = 0; j < sepEspacio.size(); ++j)
+                            {
+                                universe.emplace(sepEspacio[j]);
+                            }
                         }
                     }
                 }
@@ -238,6 +221,13 @@ class ReadGrammar
             // vector<pair<string, string>> reglas
             // .first antes de la flecha
             // .second después de la flecha (ejemplo . Z1 Z3)
+            
+            // cout << "TERMINALS\n";
+            // for (auto it : terminals)
+            // {
+            //     cout << it << endl;
+            // }
+            
             for (int z = 0; z < afd->cont; ++z)
             {
                 unordered_map<int, State*> newStates;
@@ -288,17 +278,22 @@ class ReadGrammar
                     }                    
                     // Llenar right to points después de la movida.
                     State* nuevoEstado = new State{nuevasReglas, _isTerminal, 
-                    unordered_map<string, State*>(), unordered_map<string, State*>() };  
+                    unordered_map<string, State*>(), unordered_map<string, State*>() };
+                    vector<pair<string, string>> reglasAnterior;
+
                     newRightToPoint.clear();
                     fillPointRights(nuevoEstado->reglas, newRightToPoint);
-                    // vector<pair<string, string>> reglasDelEstadoAnterior;
 
+                    // Itero sobre los nuevos que están a la derecha del punto
                     for (auto it2 : newRightToPoint)
                     {
                         // Si el nuevo que está a la derecha del punto 
                         // es un no terminal.
+                        // cout << it2 << endl;
                         if (nonTerminals.find(it2) != nonTerminals.end())
                         {
+                            // cout << "Copias reglas de " << z << " que empiecen por " << it2 <<
+                            // " al estado " << afd->cont << endl;
                             // Z3 -> Z8 . Z6
                             // it.first = Z8, it.second = Z6
                             // auto stateFrom = currentState->llegada[it.first];
@@ -311,63 +306,74 @@ class ReadGrammar
                                 // en el estado de donde vine
                                 if (currentState->reglas[j].first == it2)
                                 {
-                                    // reglasDelEstadoAnterior.push_back(currentState->reglas[j]);
+                                    reglasAnterior.push_back(currentState->reglas[j]);
                                     // Añado esas reglas al currentState
                                     nuevoEstado->reglas.push_back(currentState->reglas[j]);
                                 }
                             }
                         }
                     }
+                    
+                    if (reglasAnterior.size() != 0)
+                    {
+                        // cout << "Reglas del estado " << z << " se agregaron a " << afd->cont << endl;                 
+                        // for (auto it2 : reglasAnterior)
+                        // {
+                        //     cout << it2.first << " -> " << it2.second << endl;
+                        // }
+                        while (true)
+                        {
+                            newRightToPoint.clear();
+                            fillPointRights(reglasAnterior, newRightToPoint);
+                            reglasAnterior.clear();
+                            
+                            // Si no hay nada más a la derecha de todos los puntos
+                            if (newRightToPoint.size() == 0) break;
+                            
+                            int contTerminals = 0;
+                            for (auto it2 : newRightToPoint)
+                            {
+                                if (terminals.find(it2) != terminals.end())
+                                {
+                                    ++contTerminals;
+                                }
+                            }
+                            // Si todo lo que está a la derecha de todos los puntos son terminales
+                            if (contTerminals == newRightToPoint.size()) break;
 
+                            
+                            for (auto it2 : newRightToPoint)
+                            {
+                                if (nonTerminals.find(it2) != nonTerminals.end())
+                                {
+                                    // cout << it2 << endl;
+                                    for (int i = 0; i < currentState->reglas.size(); ++i)
+                                    {
+                                        if (currentState->reglas[i].first == it2)
+                                        {
+                                            bool alreadyExists = false;
+                                            for (int j = 0; j < nuevoEstado->reglas.size(); ++j)
+                                            {
+                                                if (nuevoEstado->reglas[j] == currentState->reglas[i])
+                                                {
+                                                    alreadyExists = true;
+                                                    break;
+                                                }
+                                            }
+                                            
+                                            if (!alreadyExists) 
+                                            {
+                                                reglasAnterior.push_back(currentState->reglas[i]);
+                                                nuevoEstado->reglas.push_back(currentState->reglas[i]);
+                                            }
 
-                    // do
-                    // {
-                    //     contAux = 0;
-                    //     newRightToPoint.clear();
-
-                    //     if (firstTry)
-                    //     {
-                    //         fillPointRights(nuevoEstado->reglas, newRightToPoint);
-                    //     }
-                    //     else
-                    //     {
-                    //         // cout << "ENTRA A LLENAR LEFT AND RIGHT\n";
-                    //         fillPointRights(reglasDelEstadoAnterior, newRightToPoint);
-                    //         // cout << "SALE DE LLENAR LEFT AND RIGHT\n";
-                    //     }
-
-                    //     reglasDelEstadoAnterior.clear();
-                    //     // Itero sobre los nuevos que están a la derecha del punto
-                    //     for (auto it2 : newRightToPoint)
-                    //     {
-                    //         // Si el nuevo que está a la derecha del punto 
-                    //         // es un no terminal.
-                    //         if (nonTerminals.find(it2) != nonTerminals.end())
-                    //         {
-                    //             ++contAux;
-                    //             // Z3 -> Z8 . Z6
-                    //             // it.first = Z8, it.second = Z6
-                    //             // auto stateFrom = currentState->llegada[it.first];
-                    //             // cout << stateFrom << endl;
-                                
-                    //             // if (currentState != nullptr)
-                    //             for (int j = 0; j < currentState->reglas.size(); ++j)
-                    //             {
-                    //                 // Encuentro las reglas que estaba buscando
-                    //                 // en el estado de donde vine
-                    //                 if (currentState->reglas[j].first == it2)
-                    //                 {
-                    //                     reglasDelEstadoAnterior.push_back(currentState->reglas[j]);
-                    //                     // Añado esas reglas al currentState
-                    //                     nuevoEstado->reglas.push_back(currentState->reglas[j]);
-                    //                     firstTry = false;
-                    //                 }
-                    //             }
-                    //         }
-                    //     }
-                        
-                    //     // cout << contAux << " " << reglasDelEstadoAnterior.size() << (contAux != 0 && reglasDelEstadoAnterior.size() != 0) << endl;
-                    // }while(contAux != 0 && reglasDelEstadoAnterior.size() != 0);
+                                        }
+                                    }
+                                }
+                            }
+                            // cout << endl;
+                        }
+                    }
 
 
                     // CUANDO YA EXISTE UN ESTADO CON ESAS REGLAS
@@ -412,64 +418,20 @@ class ReadGrammar
                         afd->cont++;
                     }
                 }
-
-                // Iterar sobre los nuevos estados
-                // for (auto F : newStates)
-                // {
-                //     currentState = F.second;
-                //     pointsLeftAndRight.clear();
-                //     // Llenar right to points después de la movida.
-                //     fillPointLeftAndRight(currentState);
-
-                //     // Itero sobre los nuevos que están a la derecha del punto
-                //     for (auto it : pointsLeftAndRight)
-                //     {
-                //         // Si el nuevo que está a la derecha del punto 
-                //         // es un no terminal.
-                //         if (it.second != "")
-                //         {
-                //             if (nonTerminals.find(it.second) != nonTerminals.end())
-                //             {
-                //                 // Z3 -> Z8 . Z6
-                //                 // it.first = Z8, it.second = Z6
-                //                 auto stateFrom = currentState->llegada[it.first];
-                //                 // cout << stateFrom << endl;
-
-                //                 if (stateFrom != nullptr)
-                //                 {
-                //                     for (int j = 0; j < stateFrom->reglas.size(); ++j)
-                //                     {
-                //                         // Encuentro las reglas que estaba buscando
-                //                         // en el estado de donde vine
-                //                         if (stateFrom->reglas[j].first == it.second)
-                //                         {
-                //                             // Añado esas reglas al currentState
-                //                             currentState->reglas.push_back(stateFrom->reglas[j]);
-                //                         }
-                //                     }
-                //                 }
-                //             }
-                //         }
-                //     }
-                // }
-                
             }
             
             afd->printAFD(outputFile);
 
-            /*
             // for (int i = 0; i < afd->states[0]->reglas.size(); ++i)
             // {
             //     afd->state[i].second;
             // }
             // afd->states[afd->cont++]
-
             // cout << "START RULES\n";
             // for (auto& it: afd->states[0]->reglas) 
             // {
             //     cout << it.first << " -> " << it.second << endl;
             // }
-
             // cout << "NON TERMINALS\n";
             // for (auto it : nonTerminals)
             // {
@@ -480,7 +442,7 @@ class ReadGrammar
             // for (auto it : terminals)
             // {
             //     cout << it << endl;
-            // }*/
+            // }
 
             file.close();
             outputFile.close();
@@ -490,5 +452,6 @@ class ReadGrammar
 
 int main()
 {
-    ReadGrammar rg("leerGramatica.txt");
+    ReadGrammar rg("leerGramaticaAleman.txt");//Proyecto de cifras de aleman
+    //ReadGrammar rg("leerGramaticaTextil.txt");//Proyecto de fabrica textil
 };
