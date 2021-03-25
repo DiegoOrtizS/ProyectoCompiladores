@@ -546,7 +546,7 @@ public:
             auto current = (pila.top()).second;
             auto goTo = rf.slr1[current][obj->reduceTo];
             if(!goTo) return true;
-            pila.push(make_pair(obj->reduceTo, goTo->estado));
+            pila.push(make_pair(obj->reduceTo, goTo->estado))l;
             return false;
     };
 	

@@ -452,5 +452,6 @@ class ReadGrammar
 
 int main()
 {
-    ReadGrammar rg("leerGramatica.txt");
+    //ReadGrammar rg("leerGramatica.txt");
+    ReadGrammar rg("leerGramaticaTextil.txt");
 };

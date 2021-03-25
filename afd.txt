@@ -1,779 +1,498 @@
-Estado: 89
-Z7 -> zwan zig . 
-
-
-Estado: 88
-Z2 -> drei zehn . 
-
-
-Estado: 87
-Z7 -> drei ssig . 
-
-
-Estado: 86
-Z7 -> ZS zig . 
-
-
-Estado: 85
-Z2 -> ZS zehn . 
-
-
-Estado: 84
-Z11 -> Z9 Z8 . 
-
-
-Estado: 83
-Z11 -> Z9 Z7 . 
-
-
 Estado: 82
-Z13 -> Z9 Z6 . 
+S -> A Sh5 SH5 . 
 
 
 Estado: 81
-Z11 -> Z9 Z34 . 
-Z2 -> Z34 . zehn 
-Z7 -> Z34 . zig 
-U -> Z34 . und 
+S -> A Sh4 SH4 . 
 
 
 Estado: 80
-Z11 -> Z9 Z2 . 
+S -> A Sh3 SH3 . 
 
 
 Estado: 79
-Z11 -> Z9 Z1 . 
-U -> Z1 . und 
+S -> A Sh2 SH2 . 
 
 
 Estado: 78
-Z13 -> Z8 Z6 . 
+S -> A Sh1 SH1 . 
 
 
 Estado: 77
-Z13 -> Z7 Z6 . 
+SV5 -> Sv5 n5 . 
 
 
 Estado: 76
-Z14 -> Z6 Z9 . 
-Z11 -> Z9 . Z1 
-Z11 -> Z9 . Z2 
-Z11 -> Z9 . Z7 
-Z11 -> Z9 . Z8 
-Z11 -> Z9 . Z34 
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-U -> . Z1 und
-U -> . Z34 und
-ZS -> . sech
-ZS -> . sieb
+SV4 -> Sv4 n5 . 
 
 
 Estado: 75
-Z14 -> Z6 Z8 . 
+SV4 -> Sv4 n4 . 
 
 
 Estado: 74
-Z14 -> Z6 Z7 . 
+SV3 -> Sv3 n5 . 
 
 
 Estado: 73
-Z14 -> Z6 Z34 . 
-Z2 -> Z34 . zehn 
-Z7 -> Z34 . zig 
-Z9 -> Z34 . Z5 
-U -> Z34 . und 
-Z5 -> . hundert
+SV3 -> Sv3 n4 . 
 
 
 Estado: 72
-Z14 -> Z6 Z2 . 
+n5 -> N5 . AC4 
 
 
 Estado: 71
-Z14 -> Z6 Z11 . 
+n4 -> N4 . AC2 
+n4 -> N4 . AC3 
+n4 -> N4 . AC4 
 
 
 Estado: 70
-Z14 -> Z6 Z1 . 
-Z9 -> Z1 . Z5 
-U -> Z1 . und 
-Z5 -> . hundert
+SV2 -> Sv2 n3 . 
 
 
 Estado: 69
-Z11 -> Z5 Z8 . 
+SV2 -> Sv2 n2 . 
 
 
 Estado: 68
-Z11 -> Z5 Z7 . 
+SV2 -> Sv2 n1 . 
 
 
 Estado: 67
-Z11 -> Z5 Z34 . 
-Z2 -> Z34 . zehn 
-Z7 -> Z34 . zig 
-U -> Z34 . und 
+SV1 -> Sv1 n3 . 
 
 
 Estado: 66
-Z11 -> Z5 Z2 . 
+SV1 -> Sv1 n2 . 
 
 
 Estado: 65
-Z11 -> Z5 Z1 . 
-U -> Z1 . und 
+SV1 -> Sv1 n1 . 
 
 
 Estado: 64
-Z7 -> Z34 zig . 
+n3 -> N3 . AC2 
+n3 -> N3 . AC3 
+n3 -> N3 . AC4 
 
 
 Estado: 63
-Z2 -> Z34 zehn . 
+n2 -> N2 . AC1 
+n2 -> N2 . AC2 
+n2 -> N2 . AC3 
 
 
 Estado: 62
-U -> Z34 und . 
+n1 -> N1 . AC1 
+n1 -> N1 . AC2 
 
 
 Estado: 61
-Z13 -> Z34 Z6 . 
+n5 -> N5 AC4 . 
 
 
 Estado: 60
-Z9 -> Z34 Z5 . 
+n4 -> N4 AC4 . 
 
 
 Estado: 59
-Z13 -> Z2 Z6 . 
+n4 -> N4 AC3 . 
 
 
 Estado: 28
-Z6 -> tausend . 
+S -> A Sh3 . SH3 
 
 
 Estado: 27
-Z1 -> sieben . 
+S -> A Sh2 . SH2 
 
 
 Estado: 26
-ZS -> sieb . 
+S -> A Sh1 . SH1 
 
 
 Estado: 25
-Z1 -> sechs . 
+SV5 -> Sv5 . n5 
+n5 -> . N5 AC4
 
 
 Estado: 24
-ZS -> sech . 
+SV4 -> Sv4 . n4 
+SV4 -> Sv4 . n5 
+n4 -> . N4 AC2
+n4 -> . N4 AC3
+n4 -> . N4 AC4
+n5 -> . N5 AC4
 
 
 Estado: 23
-Z34 -> neun . 
+SV3 -> Sv3 . n4 
+SV3 -> Sv3 . n5 
+n4 -> . N4 AC2
+n4 -> . N4 AC3
+n4 -> . N4 AC4
+n5 -> . N5 AC4
 
 
 Estado: 22
-Z5 -> hundert . 
+SV2 -> Sv2 . n1 
+SV2 -> Sv2 . n2 
+SV2 -> Sv2 . n3 
+n1 -> . N1 AC1
+n1 -> . N1 AC2
+n2 -> . N2 AC1
+n2 -> . N2 AC2
+n2 -> . N2 AC3
+n3 -> . N3 AC2
+n3 -> . N3 AC3
+n3 -> . N3 AC4
 
 
 Estado: 21
-Z34 -> fünf . 
+SV1 -> Sv1 . n1 
+SV1 -> Sv1 . n2 
+SV1 -> Sv1 . n3 
+n1 -> . N1 AC1
+n1 -> . N1 AC2
+n2 -> . N2 AC1
+n2 -> . N2 AC2
+n2 -> . N2 AC3
+n3 -> . N3 AC2
+n3 -> . N3 AC3
+n3 -> . N3 AC4
 
 
 Estado: 20
-Z2 -> elf . 
+SH4 -> SV5 . 
+SH5 -> SV5 . 
 
 
 Estado: 19
-Z1 -> ein . 
+SH4 -> SV4 . 
 
 
 Estado: 18
-Z1 -> drei . 
-Z2 -> drei . zehn 
-Z7 -> drei . ssig 
+SH1 -> SV3 . 
+SH3 -> SV3 . 
+SH4 -> SV3 . 
+SH5 -> SV3 . 
 
 
 Estado: 17
-Z34 -> acht . 
+SH1 -> SV2 . 
+SH2 -> SV2 . 
+SH3 -> SV2 . 
 
 
 Estado: 16
-S -> ZS . 
-Z2 -> ZS . zehn 
-Z7 -> ZS . zig 
+SH1 -> SV1 . 
+SH2 -> SV1 . 
+SH3 -> SV1 . 
 
 
 Estado: 15
-S -> Z9 . 
-Z11 -> Z9 . Z1 
-Z11 -> Z9 . Z2 
-Z11 -> Z9 . Z7 
-Z11 -> Z9 . Z8 
-Z11 -> Z9 . Z34 
-Z13 -> Z9 . Z6 
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-Z6 -> . tausend
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-U -> . Z1 und
-U -> . Z34 und
-ZS -> . sech
-ZS -> . sieb
+SP -> S . 
 
 
 Estado: 14
-S -> Z8 . 
-Z13 -> Z8 . Z6 
-Z6 -> . tausend
+n5 -> N5 . AC4 
+AC4 -> . Ac4 c4
 
 
 Estado: 13
-S -> Z7 . 
-Z13 -> Z7 . Z6 
-Z6 -> . tausend
+n4 -> N4 . AC2 
+n4 -> N4 . AC3 
+n4 -> N4 . AC4 
+AC2 -> . Ac2 c1
+AC2 -> . Ac2 c2
+AC2 -> . Ac2 c3
+AC3 -> . Ac3 c1
+AC3 -> . Ac3 c2
+AC3 -> . Ac3 c3
+AC4 -> . Ac4 c4
 
 
 Estado: 0
 SP -> . S
-S -> . Z1
-S -> . Z2
-S -> . zwan
-S -> . ZS
-S -> . Z34
-S -> . Z5
-S -> . Z6
-S -> . Z7
-S -> . Z8
-S -> . Z9
-S -> . Z11
-S -> . Z12
-S -> . Z13
-S -> . Z14
-S -> . U
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-ZS -> . sech
-ZS -> . sieb
-Z5 -> . hundert
-Z6 -> . tausend
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-Z9 -> . Z1 Z5
-Z9 -> . Z34 Z5
-Z10 -> . Z2 Z5
-Z11 -> . Z5 Z1
-Z11 -> . Z5 Z2
-Z11 -> . Z5 Z7
-Z11 -> . Z5 Z8
-Z11 -> . Z9 Z1
-Z11 -> . Z9 Z2
-Z11 -> . Z9 Z7
-Z11 -> . Z9 Z8
-Z11 -> . Z5 Z34
-Z11 -> . Z9 Z34
-Z12 -> . Z10 Z1
-Z12 -> . Z10 Z2
-Z12 -> . Z10 Z7
-Z12 -> . Z10 Z8
-Z12 -> . Z10 Z34
-Z13 -> . Z1 Z6
-Z13 -> . Z2 Z6
-Z13 -> . Z7 Z6
-Z13 -> . Z8 Z6
-Z13 -> . Z9 Z6
-Z13 -> . Z11 Z6
-Z13 -> . Z34 Z6
-Z14 -> . Z6 Z1
-Z14 -> . Z6 Z2
-Z14 -> . Z6 Z7
-Z14 -> . Z6 Z8
-Z14 -> . Z6 Z9
-Z14 -> . Z6 Z11
-Z14 -> . Z13 Z1
-Z14 -> . Z13 Z2
-Z14 -> . Z13 Z7
-Z14 -> . Z13 Z8
-Z14 -> . Z13 Z9
-Z14 -> . Z13 Z11
-Z14 -> . Z6 Z34
-Z14 -> . Z13 Z34
-U -> . Z1 und
-U -> . Z34 und
+S -> . A Sh1 SH1
+S -> . A Sh2 SH2
+S -> . A Sh3 SH3
+S -> . A Sh4 SH4
+S -> . A Sh5 SH5
+SH1 -> . SV1
+SH1 -> . SV2
+SH1 -> . SV3
+SH2 -> . SV1
+SH2 -> . SV2
+SH3 -> . SV1
+SH3 -> . SV2
+SH3 -> . SV3
+SH4 -> . SV3
+SH4 -> . SV4
+SH4 -> . SV5
+SH5 -> . SV3
+SH5 -> . SV5
+SV1 -> . Sv1 n1
+SV1 -> . Sv1 n2
+SV1 -> . Sv1 n3
+SV2 -> . Sv2 n1
+SV2 -> . Sv2 n2
+SV2 -> . Sv2 n3
+SV3 -> . Sv3 n4
+SV3 -> . Sv3 n5
+SV4 -> . Sv4 n4
+SV4 -> . Sv4 n5
+SV5 -> . Sv5 n5
+n1 -> . N1 AC1
+n1 -> . N1 AC2
+n2 -> . N2 AC1
+n2 -> . N2 AC2
+n2 -> . N2 AC3
+n3 -> . N3 AC2
+n3 -> . N3 AC3
+n3 -> . N3 AC4
+n4 -> . N4 AC2
+n4 -> . N4 AC3
+n4 -> . N4 AC4
+n5 -> . N5 AC4
+AC1 -> . Ac1 c1
+AC1 -> . Ac1 c2
+AC1 -> . Ac1 c3
+AC2 -> . Ac2 c1
+AC2 -> . Ac2 c2
+AC2 -> . Ac2 c3
+AC3 -> . Ac3 c1
+AC3 -> . Ac3 c2
+AC3 -> . Ac3 c3
+AC4 -> . Ac4 c4
+c1 -> . C1 c2
+c2 -> . C2 c4
+c3 -> . C3 A
+c4 -> . C4 A
 
 
 Estado: 1
-SP -> S . 
+S -> A . Sh1 SH1 
+S -> A . Sh2 SH2 
+S -> A . Sh3 SH3 
+S -> A . Sh4 SH4 
+S -> A . Sh5 SH5 
 
 
 Estado: 2
-S -> U . 
-Z8 -> U . Z7 
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-ZS -> . sech
-ZS -> . sieb
+AC1 -> Ac1 . c1 
+AC1 -> Ac1 . c2 
+AC1 -> Ac1 . c3 
+c1 -> . C1 c2
+c2 -> . C2 c4
+c3 -> . C3 A
 
 
 Estado: 3
-S -> Z1 . 
-Z9 -> Z1 . Z5 
-Z13 -> Z1 . Z6 
-U -> Z1 . und 
-Z5 -> . hundert
-Z6 -> . tausend
+AC2 -> Ac2 . c1 
+AC2 -> Ac2 . c2 
+AC2 -> Ac2 . c3 
+c1 -> . C1 c2
+c2 -> . C2 c4
+c3 -> . C3 A
 
 
 Estado: 4
-Z12 -> Z10 . Z1 
-Z12 -> Z10 . Z2 
-Z12 -> Z10 . Z7 
-Z12 -> Z10 . Z8 
-Z12 -> Z10 . Z34 
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-U -> . Z1 und
-U -> . Z34 und
-ZS -> . sech
-ZS -> . sieb
+AC3 -> Ac3 . c1 
+AC3 -> Ac3 . c2 
+AC3 -> Ac3 . c3 
+c1 -> . C1 c2
+c2 -> . C2 c4
+c3 -> . C3 A
 
 
 Estado: 5
-S -> Z11 . 
-Z13 -> Z11 . Z6 
-Z6 -> . tausend
+AC4 -> Ac4 . c4 
+c4 -> . C4 A
 
 
 Estado: 6
-S -> Z12 . 
+c1 -> C1 . c2 
+c2 -> . C2 c4
 
 
 Estado: 7
-S -> Z13 . 
-Z14 -> Z13 . Z1 
-Z14 -> Z13 . Z2 
-Z14 -> Z13 . Z7 
-Z14 -> Z13 . Z8 
-Z14 -> Z13 . Z9 
-Z14 -> Z13 . Z11 
-Z14 -> Z13 . Z34 
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z11 -> . Z5 Z1
-Z11 -> . Z5 Z2
-Z11 -> . Z5 Z7
-Z11 -> . Z5 Z8
-Z11 -> . Z9 Z1
-Z11 -> . Z9 Z2
-Z11 -> . Z9 Z7
-Z11 -> . Z9 Z8
-Z11 -> . Z5 Z34
-Z11 -> . Z9 Z34
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünfgit status
-Z34 -> . acht
-Z34 -> . neun
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-Z9 -> . Z1 Z5
-Z9 -> . Z34 Z5
-U -> . Z1 und
-U -> . Z34 und
-Z5 -> . hundert
-ZS -> . sech
-ZS -> . sieb
+c2 -> C2 . c4 
+c4 -> . C4 A
 
 
 Estado: 8
-S -> Z14 . 
+c3 -> C3 . A 
 
 
 Estado: 9
-S -> Z2 . 
-Z10 -> Z2 . Z5 
-Z13 -> Z2 . Z6 
-Z5 -> . hundert
-Z6 -> . tausend
+c4 -> C4 . A 
 
 
 Estado: 10
-S -> Z34 . 
-Z2 -> Z34 . zehn 
-Z7 -> Z34 . zig 
-Z9 -> Z34 . Z5 
-Z13 -> Z34 . Z6 
-U -> Z34 . und 
-Z5 -> . hundert
-Z6 -> . tausend
+n1 -> N1 . AC1 
+n1 -> N1 . AC2 
+AC1 -> . Ac1 c1
+AC1 -> . Ac1 c2
+AC1 -> . Ac1 c3
+AC2 -> . Ac2 c1
+AC2 -> . Ac2 c2
+AC2 -> . Ac2 c3
 
 
 Estado: 11
-S -> Z5 . 
-Z11 -> Z5 . Z1 
-Z11 -> Z5 . Z2 
-Z11 -> Z5 . Z7 
-Z11 -> Z5 . Z8 
-Z11 -> Z5 . Z34 
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-U -> . Z1 und
-U -> . Z34 und
-ZS -> . sech
-ZS -> . sieb
+n2 -> N2 . AC1 
+n2 -> N2 . AC2 
+n2 -> N2 . AC3 
+AC1 -> . Ac1 c1
+AC1 -> . Ac1 c2
+AC1 -> . Ac1 c3
+AC2 -> . Ac2 c1
+AC2 -> . Ac2 c2
+AC2 -> . Ac2 c3
+AC3 -> . Ac3 c1
+AC3 -> . Ac3 c2
+AC3 -> . Ac3 c3
 
 
 Estado: 12
-S -> Z6 . 
-Z14 -> Z6 . Z1 
-Z14 -> Z6 . Z2 
-Z14 -> Z6 . Z7 
-Z14 -> Z6 . Z8 
-Z14 -> Z6 . Z9 
-Z14 -> Z6 . Z11 
-Z14 -> Z6 . Z34 
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z11 -> . Z5 Z1
-Z11 -> . Z5 Z2
-Z11 -> . Z5 Z7
-Z11 -> . Z5 Z8
-Z11 -> . Z9 Z1
-Z11 -> . Z9 Z2
-Z11 -> . Z9 Z7
-Z11 -> . Z9 Z8
-Z11 -> . Z5 Z34
-Z11 -> . Z9 Z34
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-Z9 -> . Z1 Z5
-Z9 -> . Z34 Z5
-U -> . Z1 und
-U -> . Z34 und
-Z5 -> . hundert
-ZS -> . sech
-ZS -> . sieb
+n3 -> N3 . AC2 
+n3 -> N3 . AC3 
+n3 -> N3 . AC4 
+AC2 -> . Ac2 c1
+AC2 -> . Ac2 c2
+AC2 -> . Ac2 c3
+AC3 -> . Ac3 c1
+AC3 -> . Ac3 c2
+AC3 -> . Ac3 c3
+AC4 -> . Ac4 c4
 
 
 Estado: 29
-Z34 -> vier . 
+S -> A Sh4 . SH4 
 
 
 Estado: 30
-Z2 -> zehn . 
+S -> A Sh5 . SH5 
 
 
 Estado: 31
-S -> zwan . 
-Z7 -> zwan . zig 
+c2 -> C2 . c4 
 
 
 Estado: 32
-Z1 -> zwei . 
+AC1 -> Ac1 c1 . 
 
 
 Estado: 33
-Z2 -> zwölf . 
+AC1 -> Ac1 c2 . 
 
 
 Estado: 34
-Z7 -> Z34 . zig 
+AC1 -> Ac1 c3 . 
 
 
 Estado: 35
-Z8 -> U Z7 . 
+AC2 -> Ac2 c1 . 
 
 
 Estado: 36
-Z7 -> ZS . zig 
+AC2 -> Ac2 c2 . 
 
 
 Estado: 37
-Z7 -> drei . ssig 
+AC2 -> Ac2 c3 . 
 
 
 Estado: 38
-Z7 -> zwan . zig 
+AC3 -> Ac3 c1 . 
 
 
 Estado: 39
-Z9 -> Z1 Z5 . 
+AC3 -> Ac3 c2 . 
 
 
 Estado: 40
-Z13 -> Z1 Z6 . 
+AC3 -> Ac3 c3 . 
 
 
 Estado: 41
-U -> Z1 und . 
+AC4 -> Ac4 c4 . 
 
 
 Estado: 42
-Z8 -> U . Z7 
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-ZS -> . sech
-ZS -> . sieb
+c1 -> C1 c2 . 
 
 
 Estado: 43
-Z12 -> Z10 Z1 . 
-U -> Z1 . und 
+c2 -> C2 c4 . 
 
 
 Estado: 44
-Z12 -> Z10 Z2 . 
+c3 -> C3 A . 
 
 
 Estado: 45
-Z12 -> Z10 Z34 . 
-Z2 -> Z34 . zehn 
-Z7 -> Z34 . zig 
-U -> Z34 . und 
+c4 -> C4 A . 
 
 
 Estado: 46
-Z12 -> Z10 Z7 . 
+n1 -> N1 AC1 . 
 
 
 Estado: 47
-Z12 -> Z10 Z8 . 
+n1 -> N1 AC2 . 
 
 
 Estado: 48
-Z2 -> ZS . zehn 
-Z7 -> ZS . zig 
+AC1 -> Ac1 . c1 
+AC1 -> Ac1 . c2 
+AC1 -> Ac1 . c3 
 
 
 Estado: 49
-Z13 -> Z11 Z6 . 
+AC2 -> Ac2 . c1 
+AC2 -> Ac2 . c2 
+AC2 -> Ac2 . c3 
 
 
 Estado: 50
-Z14 -> Z13 Z1 . 
-Z9 -> Z1 . Z5 
-U -> Z1 . und 
-Z5 -> . hundert
+n2 -> N2 AC1 . 
 
 
 Estado: 51
-Z14 -> Z13 Z11 . 
+n2 -> N2 AC2 . 
 
 
 Estado: 52
-Z14 -> Z13 Z2 . 
+n2 -> N2 AC3 . 
 
 
 Estado: 53
-Z14 -> Z13 Z34 . 
-Z2 -> Z34 . zehn 
-Z7 -> Z34 . zig 
-Z9 -> Z34 . Z5 
-U -> Z34 . und 
-Z5 -> . hundert
+AC3 -> Ac3 . c1 
+AC3 -> Ac3 . c2 
+AC3 -> Ac3 . c3 
 
 
 Estado: 54
-Z11 -> Z5 . Z1 
-Z11 -> Z5 . Z2 
-Z11 -> Z5 . Z7 
-Z11 -> Z5 . Z8 
-Z11 -> Z5 . Z34 
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-U -> . Z1 und
-U -> . Z34 und
-ZS -> . sech
-ZS -> . sieb
+n3 -> N3 AC2 . 
 
 
 Estado: 55
-Z14 -> Z13 Z7 . 
+n3 -> N3 AC3 . 
 
 
 Estado: 56
-Z14 -> Z13 Z8 . 
+n3 -> N3 AC4 . 
 
 
 Estado: 57
-Z14 -> Z13 Z9 . 
-Z11 -> Z9 . Z1 
-Z11 -> Z9 . Z2 
-Z11 -> Z9 . Z7 
-Z11 -> Z9 . Z8 
-Z11 -> Z9 . Z34 
-Z1 -> . ein
-Z1 -> . zwei
-Z1 -> . drei
-Z1 -> . sechs
-Z1 -> . sieben
-Z2 -> . drei zehn
-Z2 -> . Z34 zehn
-Z2 -> . ZS zehn
-Z2 -> . zehn
-Z2 -> . elf
-Z2 -> . zwölf
-Z34 -> . vier
-Z34 -> . fünf
-Z34 -> . acht
-Z34 -> . neun
-Z7 -> . zwan zig
-Z7 -> . Z34 zig
-Z7 -> . ZS zig
-Z7 -> . drei ssig
-Z8 -> . U Z7
-U -> . Z1 und
-U -> . Z34 und
-ZS -> . sech
-ZS -> . sieb
+AC4 -> Ac4 . c4 
 
 
 Estado: 58
-Z10 -> Z2 Z5 . 
+n4 -> N4 AC2 . 
 
 
