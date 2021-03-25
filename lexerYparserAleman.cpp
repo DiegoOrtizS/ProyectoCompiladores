@@ -344,10 +344,10 @@ class Lexer
 
 
 struct ParseCell {    
-    string reduceTo;
-    bool isReduce;
-    int estado;
-    stack<string> reduce; 
+    string reduceTo;// U->Z1 Z2
+    bool isReduce;//true si es reduction.
+    int estado; //-1 si es reudcion.
+    stack<string> reduce; //ZI Z2
     bool isAcepted;
 
     void printReduce(){
@@ -528,7 +528,7 @@ public:
             cout << "r( " << obj->reduceTo << " -> ";
             stack<string> pilaAux;
 
-            while (!obj->reduce.empty()){
+            while (!obj->reduce.empty()){ //U-> Z1 Z2
                 auto toDelete = obj->reduce.top();
                 if(toDelete == (pila.top().first))
                 {
