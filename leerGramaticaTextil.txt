@@ -1,0 +1,26 @@
+SP -> S|
+S -> A Sh1 SH1 | A Sh2 SH2 | A Sh3 SH3 | A Sh4 SH4 | A Sh5 SH5|
+SH1 -> SV1 | SV2 | SV3|
+SH2 -> SV1 | SV2|
+SH3 -> SV1 | SV2 | SV3|
+SH4 -> SV3 | SV4 | SV5|
+SH5 -> SV3 | SV5|
+SV1 -> Sv1 n1 | Sv1 n2 | Sv1 n3|
+SV2 -> Sv2 n1 | Sv2 n2 | Sv2 n3|
+SV3 -> Sv3 n4 | Sv3 n5|
+SV4 -> Sv4 n4 | Sv4 n5|
+SV5 -> Sv5 n5| 
+n1 -> N1 AC1 | N1 AC2|
+n2 -> N2 AC1 | N2 AC2 | N2 AC3|
+n3 -> N3 AC2 | N3 AC3 | N3 AC4|
+n4 -> N4 AC2 | N4 AC3 | N4 AC4|
+n5 -> N5 AC4|
+AC1 -> Ac1 c1 | Ac1 c2 | Ac1 c3|
+AC2 -> Ac2 c1 | Ac2 c2 | Ac2 c3|
+AC3 -> Ac3 c1 | Ac3 c2 | Ac3 c3|
+AC4 -> Ac4 c4|
+c1 -> C1 c2|
+c2 -> C2 c4|
+c3 -> C3 A|
+c4 -> C4 A|
+X
