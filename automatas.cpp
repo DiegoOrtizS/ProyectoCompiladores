@@ -33,6 +33,23 @@ vector<string> split(const string& str, const string& delim)
 	return tokens;
 }
 
+string replaceFirst(string s, char change)
+{
+    string newStr = ". ";
+    for (int i = 0; i < s.size(); ++i)
+    {
+        if (s[i] != change)
+        {
+          newStr += s[i];
+        }
+        else
+        {
+            ++i;
+        }
+    }
+    return newStr;
+}
+
 struct State
 {
     vector<pair<string, string>> reglas;
@@ -159,7 +176,7 @@ class ReadGrammar
                     
                     else
                     {
-                        for (int i = 0; i < sepOr.size() - 1; ++i)
+                        for (int i = 0; i < sepOr.size(); ++i)
                         {
                             vec.push_back(make_pair(sepFlecha[0], sepOr[i]));
                             nonTerminals.emplace(sepFlecha[0]);
@@ -213,26 +230,10 @@ class ReadGrammar
             // SE CREA EL ESTADO 0
             afd->states[afd->cont++] = new State{startRules, false, unordered_map<string, State*>(), unordered_map<string, State*>() };
             
-            // auto nextRule = movePoint(0, 40);
-
-            // cout << nextRule.first << " -> "<< nextRule.second << endl;
-            // cout << endl;
-
-            // vector<pair<string, string>> reglas
-            // .first antes de la flecha
-            // .second después de la flecha (ejemplo . Z1 Z3)
-            
-            // cout << "TERMINALS\n";
-            // for (auto it : terminals)
-            // {
-            //     cout << it << endl;
-            // }
-            
             for (int z = 0; z < afd->cont; ++z)
             {
                 unordered_map<int, State*> newStates;
 
-                // cout << afd->cont << endl;
                 if (afd->states[z]->isTerminal)
                 {
                     continue;
@@ -240,9 +241,8 @@ class ReadGrammar
 
                 auto currentState = afd->states[z];
                 rightToPoint.clear();
-                // cout << "ENTER fillPointRights\n";
                 fillPointRights(currentState->reglas, rightToPoint);
-                // cout << "FINISH fillPointRights\n";
+
                 // TRANSICIÓN CON LO QUE ESTÁ A LA DERECHA DEL PUNTO
                 for (auto it : rightToPoint)
                 {
@@ -263,10 +263,9 @@ class ReadGrammar
                             }
                         }
                     }
+
                     // SI ES QUE A LA DERECHA DEL PUNTO DESPUÉS DE MOVERLO
-                    // HAY UN NO TERMINAL Y ESTE SE ENCUENTRA
-                    // PRESENTE EN LAS REGLAS DEL ESTADO POR DONDE VINE
-                    // TENEMOS QUE AGREGARLE SUS REGLAS A NUEVAS REGLAS
+                    // HAY UN NO TERMINAL TRAEMOS SUS REGLAS
                     bool _isTerminal = true;  
 
                     for (int i = 0; i < nuevasReglas.size(); ++i)
@@ -275,7 +274,8 @@ class ReadGrammar
                         {
                             _isTerminal = false;
                         }
-                    }                    
+                    }                  
+
                     // Llenar right to points después de la movida.
                     State* nuevoEstado = new State{nuevasReglas, _isTerminal, 
                     unordered_map<string, State*>(), unordered_map<string, State*>() };
@@ -289,7 +289,6 @@ class ReadGrammar
                     {
                         // Si el nuevo que está a la derecha del punto 
                         // es un no terminal.
-                        // cout << it2 << endl;
                         if (nonTerminals.find(it2) != nonTerminals.end())
                         {
                             // cout << "Copias reglas de " << z << " que empiecen por " << it2 <<
@@ -300,15 +299,14 @@ class ReadGrammar
                             // cout << stateFrom << endl;
                             
                             // if (currentState != nullptr)
-                            for (int j = 0; j < currentState->reglas.size(); ++j)
+                            for (int i = 0; i < afd->states[0]->reglas.size(); ++i)
                             {
                                 // Encuentro las reglas que estaba buscando
-                                // en el estado de donde vine
-                                if (currentState->reglas[j].first == it2)
+                                if (afd->states[0]->reglas[i].first == it2)
                                 {
-                                    reglasAnterior.push_back(currentState->reglas[j]);
-                                    // Añado esas reglas al currentState
-                                    nuevoEstado->reglas.push_back(currentState->reglas[j]);
+                                    pair<string, string> auxPair = make_pair(it2, replaceFirst(afd->states[0]->reglas[i].second, '.'));
+                                    reglasAnterior.push_back(auxPair);
+                                    nuevoEstado->reglas.push_back(auxPair);
                                 }
                             }
                         }
@@ -316,11 +314,6 @@ class ReadGrammar
                     
                     if (reglasAnterior.size() != 0)
                     {
-                        // cout << "Reglas del estado " << z << " se agregaron a " << afd->cont << endl;                 
-                        // for (auto it2 : reglasAnterior)
-                        // {
-                        //     cout << it2.first << " -> " << it2.second << endl;
-                        // }
                         while (true)
                         {
                             newRightToPoint.clear();
@@ -341,20 +334,18 @@ class ReadGrammar
                             // Si todo lo que está a la derecha de todos los puntos son terminales
                             if (contTerminals == newRightToPoint.size()) break;
 
-                            
                             for (auto it2 : newRightToPoint)
                             {
                                 if (nonTerminals.find(it2) != nonTerminals.end())
                                 {
-                                    // cout << it2 << endl;
-                                    for (int i = 0; i < currentState->reglas.size(); ++i)
+                                    for (int i = 0; i < afd->states[0]->reglas.size(); ++i)
                                     {
-                                        if (currentState->reglas[i].first == it2)
+                                        if (afd->states[0]->reglas[i].first == it2)
                                         {
                                             bool alreadyExists = false;
                                             for (int j = 0; j < nuevoEstado->reglas.size(); ++j)
                                             {
-                                                if (nuevoEstado->reglas[j] == currentState->reglas[i])
+                                                if (nuevoEstado->reglas[j] == afd->states[0]->reglas[i])
                                                 {
                                                     alreadyExists = true;
                                                     break;
@@ -363,15 +354,16 @@ class ReadGrammar
                                             
                                             if (!alreadyExists) 
                                             {
-                                                reglasAnterior.push_back(currentState->reglas[i]);
-                                                nuevoEstado->reglas.push_back(currentState->reglas[i]);
+                                                pair<string, string> auxPair = make_pair(it2, replaceFirst(afd->states[0]->reglas[i].second, '.'));
+
+                                                reglasAnterior.push_back(auxPair);
+                                                nuevoEstado->reglas.push_back(auxPair);
                                             }
 
                                         }
                                     }
                                 }
                             }
-                            // cout << endl;
                         }
                     }
 
@@ -447,11 +439,4 @@ class ReadGrammar
             file.close();
             outputFile.close();
         };
-};
-
-
-int main()
-{
-    ReadGrammar rg("leerGramaticaAleman.txt");//Proyecto de cifras de aleman
-    //ReadGrammar rg("leerGramaticaTextil.txt");//Proyecto de fabrica textil
 };
